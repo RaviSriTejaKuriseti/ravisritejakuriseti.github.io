@@ -97,30 +97,30 @@
 
     <article class="post-content container" data-aos="fade-up">
         <p>
-            While Transformer-based models have revolutionized NLP and are now making heavy inroads into Computer Vision, they initially struggled to surpass the performance of CNN-based models in specific tasks like pedestrian detection. In our research paper presented at <strong>WACV 2024</strong>, we explored why this happens and how to fix it.
+            During my time as an Undergraduate Researcher at IIT Delhi, I became fascinated by how machines "see" the world. While Transformer-based models were winning everywhere in NLP, they were surprisingly struggling with traditional Computer Vision tasks like pedestrian detection. My team and I really wanted to understand why.
         </p>
 
-        <h2>The Problem: One-to-One Matching</h2>
+        <h2>The "Aha!" Moment</h2>
         <p>
-            Most transformer-based detectors (like DETR) use a one-to-one bipartite matching during training. This means each ground truth object is matched to exactly one predicted box. While elegant, this often leads to sparse training signals and slower convergence, especially for smaller, crowded objects like pedestrians.
+            We realized that the standard way these models were trained (called one-to-one matching) was actually holding them back. Imagine trying to learn how to identify a person, but you only get one "correct" signal for every dozen attempts. It's slow and frustrating.
         </p>
 
-        <h2>Our Solution: Many-to-One Matching</h2>
+        <h2>Our Approach: Many-to-One Matching</h2>
         <p>
-            We proposed a <strong>Min-cost-flow based matching algorithm</strong> that allows for many-to-one matching. By allowing multiple candidate predictions to match with a single ground truth object during the middle stages of training, we provide a much richer gradient signal to the model.
-        </p>
-
-        <p>
-            This approach significantly improved miss rates across multiple challenging datasets (CityPersons, CrowdHuman) without adding any inference-time overhead.
-        </p>
-
-        <h2>Impact and Implementation</h2>
-        <p>
-            The resulting model is not only more accurate but also more robust to occlusions—a common problem in urban pedestrian detection. We've open-sourced our code and matcher to help the community experiment with these techniques.
+            We thought, "What if we allow the model to learn from multiple good predictions at once?" We developed a <strong>Min-cost-flow based matching algorithm</strong> that does exactly that. By giving the model a much richer signal during training, we saw a massive jump in performance.
         </p>
 
         <p>
-            You can find the full paper and code links in the <a href="../index.html#publications" style="color: var(--primary);">Publications</a> section of my portfolio.
+            It was incredibly rewarding to see this approach work so well on challenging datasets like CrowdHuman. It didn't just make the models faster to train—it made them much better at detecting pedestrians in crowded, complex environments.
+        </p>
+
+        <h2>Sharing the Work</h2>
+        <p>
+            We ended up presenting this work at <strong>WACV 2024</strong>. We have always believed in open research, so we've made all our code and matchers available for anyone to experiment with.
+        </p>
+
+        <p>
+            If you're interested in the technical nitty-gritty, you can find the full paper and code links in my <a href="../index.html#publications">Publications</a> section.
         </p>
     </article>
 
