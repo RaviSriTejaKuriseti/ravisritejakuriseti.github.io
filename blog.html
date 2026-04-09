@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Kuriseti Ravi Sri Teja</title>
+    <meta name="description" content="Personal Blog of Kuriseti Ravi Sri Teja">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="./assets/img/logo.jpeg" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Animate on Scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        .blog-hero {
+            height: 40vh;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.7)), url('./assets/img/hero_bg.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .blog-posts {
+            padding: 80px 0;
+        }
+
+        .post-card {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .post-card .post-category {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .post-card h2 {
+            font-size: 1.8rem;
+            line-height: 1.3;
+            transition: 0.3s;
+        }
+
+        .post-card:hover h2 {
+            color: var(--primary);
+        }
+
+        .post-card p {
+            color: var(--text-dim);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-card .read-more {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.3s;
+        }
+
+        .post-card .read-more:hover {
+            color: var(--primary);
+            gap: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-glow">
+        <div class="glow-orb"></div>
+        <div class="glow-orb-2"></div>
+    </div>
+
+    <nav>
+        <div class="container">
+            <div class="logo">RAVI SRI TEJA</div>
+            <ul>
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#education">Education</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#publications">Publications</a></li>
+                <li><a href="blog.html" style="color: var(--text-main);">Blog</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="blog-hero">
+        <div class="hero-content" data-aos="fade-down">
+            <h1>Personal <span>Blog</span></h1>
+            <p>Thoughts on AI, Software Engineering, and Technology</p>
+        </div>
+    </header>
+
+    <section class="blog-posts container">
+        <div class="card-grid">
+            <!-- Blog Post: CodeWiki -->
+            <!-- <article class="card post-card" data-aos="fade-up">
+                <span class="post-category">Tools & Technology</span>
+                <span class="date">April 10, 2026</span>
+                <h2>Exploring CodeWiki: Your AI-Powered Repository Companion</h2>
+                <p>Learn how codewiki.google is revolutionizing repository understanding with AI-generated summaries and architectural insights.</p>
+                <a href="posts/codewiki-google.html" class="read-more">Read More →</a>
+            </article> -->
+
+            <!-- Blog Post: Agentic AI -->
+            <article class="card post-card" data-aos="fade-up" data-aos-delay="100">
+                <span class="post-category">Artificial Intelligence</span>
+                <span class="date">April 9, 2026</span>
+                <h2>The Future of Agentic AI in Software Development</h2>
+                <p>Exploring how autonomous agents are transforming the way we write and maintain code in 2026.</p>
+                <a href="posts/agentic-ai.html" class="read-more">Read More →</a>
+            </article>
+
+            <!-- Blog Post: Object Detection -->
+            <article class="card post-card" data-aos="fade-up" data-aos-delay="200">
+                <span class="post-category">Machine Learning</span>
+                <span class="date">March 25, 2026</span>
+                <h2>Robust Pedestrian Detection with Transformers</h2>
+                <p>A deep dive into our WACV 2024 research on many-to-one matching for transformer-based detectors.</p>
+                <a href="posts/object-detection.html" class="read-more">Read More →</a>
+            </article>
+
+            <!-- Blog Post: My Journey -->
+            <article class="card post-card" data-aos="fade-up" data-aos-delay="300">
+                <span class="post-category">Career</span>
+                <span class="date">March 10, 2026</span>
+                <h2>My Journey: From IIT Delhi to Eightfold AI</h2>
+                <p>Reflecting on the challenges and milestones of my career as a Machine Learning Engineer.</p>
+                <a href="posts/my-journey.html" class="read-more">Read More →</a>
+            </article>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="socials">
+                <a href="https://github.com/RaviSriTejaKuriseti" target="_blank"><img src="./assets/img/ghub.png"
+                        alt="Github"></a>
+                <a href="https://www.linkedin.com/in/ravi-sri-teja-kuriseti-83b9681b0/" target="_blank"><img
+                        src="./assets/img/linkedin.png" alt="LinkedIn"></a>
+            </div>
+            <p>&copy; 2026 Kuriseti Ravi Sri Teja. All rights reserved.</p>
+            <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 10px;">Built with Human & Artificial
+                Intelligence.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+
+</html>

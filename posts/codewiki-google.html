@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demystifying Codebases with CodeWiki | Kuriseti Ravi Sri Teja</title>
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/img/logo.jpeg" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Animate on Scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        .post-header {
+            padding: 150px 0 50px;
+            text-align: center;
+        }
+
+        .post-meta {
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .post-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 2rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            margin-bottom: 100px;
+        }
+
+        .post-content h2 {
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+        }
+
+        .post-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .highlight-box {
+            background: rgba(168, 85, 247, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 10px 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-glow">
+        <div class="glow-orb"></div>
+        <div class="glow-orb-2"></div>
+    </div>
+
+    <nav>
+        <div class="container">
+            <div class="logo">RAVI SRI TEJA</div>
+            <ul>
+                <li><a href="../index.html#home">Home</a></li>
+                <li><a href="../blog.html">Blog</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="post-header container">
+        <div data-aos="fade-down">
+            <a href="../blog.html" class="back-link">← Back to Blog</a>
+            <span class="post-meta">April 10, 2026 • Tools & Technology</span>
+            <h1>Exploring CodeWiki: Your AI-Powered Repository Companion</h1>
+        </div>
+    </header>
+
+    <article class="post-content container" data-aos="fade-up">
+        <p>
+            As software projects grow in complexity, understanding a new repository can feel like navigating a labyrinth without a map. Enter <strong>CodeWiki</strong>, an internal Google tool that is changing how engineers interact with codebases.
+        </p>
+
+        <div class="highlight-box">
+            "CodeWiki provides AI-generated summaries, architectural overviews, and deep insights into any repository, making the 'onboarding' process faster than ever."
+        </div>
+
+        <h2>What is CodeWiki?</h2>
+        <p>
+            CodeWiki (codewiki.google) serves as a centralized hub for repository knowledge. Instead of digging through READMEs or trying to grep your way through thousands of files, CodeWiki uses advanced LLMs to ingest a codebase and provide a succinct, high-level summary.
+        </p>
+
+        <h2>Key Features</h2>
+        <ul>
+            <li><strong>Automated Summaries:</strong> Get an instant overview of what a repository does and its primary goals.</li>
+            <li><strong>Architectural Insights:</strong> Understand the high-level design patterns and how different components interact.</li>
+            <li><strong>Topic Search:</strong> Ask questions about the codebase and get grounded answers cited directly from the source code.</li>
+            <li><strong>Dependency Mapping:</strong> Visualize how the project fits into the broader ecosystem.</li>
+        </ul>
+
+        <h2>Why It Matters</h2>
+        <p>
+            In a fast-paced environment like Google, the time saved by a tool like CodeWiki is invaluable. It reduces cognitive load and allows engineers to focus on building features rather than deciphering historical context.
+        </p>
+
+        <p>
+            Whether you're a seasoned veteran or a new hire, having a "wiki" that is always up-to-date with the latest commits is a developer's dream.
+        </p>
+
+        <h2>Final Thoughts</h2>
+        <p>
+            CodeWiki represents the next step in development tools—where AI doesn't just write code, but helps us <em>understand</em> it. It's a glimpse into the future of collaborative engineering.
+        </p>
+    </article>
+
+    <footer>
+        <div class="container">
+            <div class="socials">
+                <a href="https://github.com/RaviSriTejaKuriseti" target="_blank"><img src="../assets/img/ghub.png"
+                        alt="Github"></a>
+                <a href="https://www.linkedin.com/in/ravi-sri-teja-kuriseti-83b9681b0/" target="_blank"><img
+                        src="../assets/img/linkedin.png" alt="LinkedIn"></a>
+            </div>
+            <p>&copy; 2026 Kuriseti Ravi Sri Teja. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+
+</html>

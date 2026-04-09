@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robust Pedestrian Detection with Transformers | Kuriseti Ravi Sri Teja</title>
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/img/logo.jpeg" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Animate on Scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        .post-header {
+            padding: 150px 0 50px;
+            text-align: center;
+        }
+
+        .post-meta {
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .post-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 2rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            margin-bottom: 100px;
+        }
+
+        .post-content h2 {
+            margin: 2rem 0 1rem;
+            color: var(--primary);
+        }
+
+        .post-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-glow">
+        <div class="glow-orb"></div>
+        <div class="glow-orb-2"></div>
+    </div>
+
+    <nav>
+        <div class="container">
+            <div class="logo">RAVI SRI TEJA</div>
+            <ul>
+                <li><a href="../index.html#home">Home</a></li>
+                <li><a href="../blog.html">Blog</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="post-header container">
+        <div data-aos="fade-down">
+            <a href="../blog.html" class="back-link">← Back to Blog</a>
+            <span class="post-meta">March 25, 2026 • Machine Learning</span>
+            <h1>Robust Pedestrian Detection using Transformers</h1>
+        </div>
+    </header>
+
+    <article class="post-content container" data-aos="fade-up">
+        <p>
+            While Transformer-based models have revolutionized NLP and are now making heavy inroads into Computer Vision, they initially struggled to surpass the performance of CNN-based models in specific tasks like pedestrian detection. In our research paper presented at <strong>WACV 2024</strong>, we explored why this happens and how to fix it.
+        </p>
+
+        <h2>The Problem: One-to-One Matching</h2>
+        <p>
+            Most transformer-based detectors (like DETR) use a one-to-one bipartite matching during training. This means each ground truth object is matched to exactly one predicted box. While elegant, this often leads to sparse training signals and slower convergence, especially for smaller, crowded objects like pedestrians.
+        </p>
+
+        <h2>Our Solution: Many-to-One Matching</h2>
+        <p>
+            We proposed a <strong>Min-cost-flow based matching algorithm</strong> that allows for many-to-one matching. By allowing multiple candidate predictions to match with a single ground truth object during the middle stages of training, we provide a much richer gradient signal to the model.
+        </p>
+
+        <p>
+            This approach significantly improved miss rates across multiple challenging datasets (CityPersons, CrowdHuman) without adding any inference-time overhead.
+        </p>
+
+        <h2>Impact and Implementation</h2>
+        <p>
+            The resulting model is not only more accurate but also more robust to occlusions—a common problem in urban pedestrian detection. We've open-sourced our code and matcher to help the community experiment with these techniques.
+        </p>
+
+        <p>
+            You can find the full paper and code links in the <a href="../index.html#publications" style="color: var(--primary);">Publications</a> section of my portfolio.
+        </p>
+    </article>
+
+    <footer>
+        <div class="container">
+            <div class="socials">
+                <a href="https://github.com/RaviSriTejaKuriseti" target="_blank"><img src="../assets/img/ghub.png"
+                        alt="Github"></a>
+                <a href="https://www.linkedin.com/in/ravi-sri-teja-kuriseti-83b9681b0/" target="_blank"><img
+                        src="../assets/img/linkedin.png" alt="LinkedIn"></a>
+            </div>
+            <p>&copy; 2026 Kuriseti Ravi Sri Teja. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+
+</html>
