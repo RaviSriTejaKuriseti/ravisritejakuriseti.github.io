@@ -67,6 +67,45 @@
             padding: 1.5rem;
             margin: 2rem 0;
             border-radius: 0 10px 10px 0;
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+
+        .post-content a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .post-content a:hover {
+            text-decoration: underline;
+        }
+
+        .code-snippet {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            font-family: 'Courier New', Courier, monospace;
+            border: 1px solid var(--glass-border);
+            overflow-x: auto;
+        }
+
+        .code-snippet .old { color: #f87171; text-decoration: line-through; }
+        .code-snippet .new { color: #4ade80; font-weight: bold; }
+
+        .post-content ul {
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+        }
+
+        .post-content li {
+            margin-bottom: 1rem;
+            color: var(--text-dim);
+        }
+
+        .post-content li strong {
+            color: var(--primary);
         }
     </style>
 </head>
@@ -98,38 +137,47 @@
 
     <article class="post-content container" data-aos="fade-up">
         <p>
-            As software projects grow in complexity, understanding a new repository can feel like navigating a labyrinth without a map. Enter <strong>CodeWiki</strong>, an internal Google tool that is changing how engineers interact with codebases.
+            We've all been there: you open a new repository, and you're immediately hit with a wall of thousands of files and zero context. It feels like being dropped into a labyrinth without a map. Recently, I came across <a href="https://codewiki.google/" target="_blank">CodeWiki</a>, and it's honestly changed how I approach exploring new codebases.
         </p>
 
         <div class="highlight-box">
-            "CodeWiki provides AI-generated summaries, architectural overviews, and deep insights into any repository, making the 'onboarding' process faster than ever."
+            "It's like having the lead architect sitting right next to you, explaining exactly how everything fits together."
         </div>
 
-        <h2>What is CodeWiki?</h2>
         <p>
-            CodeWiki (codewiki.google) serves as a centralized hub for repository knowledge. Instead of digging through READMEs or trying to grep your way through thousands of files, CodeWiki uses advanced LLMs to ingest a codebase and provide a succinct, high-level summary.
+            At its core, CodeWiki is a hub for repository knowledge. But instead of relying on manually updated READMEs that are often out of date, it uses LLMs to digest the entire codebase and give you a high-level summary that actually makes sense.
         </p>
 
-        <h2>Key Features</h2>
+        <h2>The "Magic" URL Trick</h2>
+        <p>
+            What I love most about it is how seamless the workflow is. You don't need a complex setup or a plugin. You just take any public GitHub repository and give the URL a little tweak in your address bar:
+        </p>
+
+        <div class="code-snippet">
+            <span class="old">https://</span>github.com/openclaw/openclaw<br>
+            <span class="new">https://codewiki.google/</span>github.com/openclaw/openclaw
+        </div>
+
+        <p>
+            That simple change unlocks a full dashboard that breaks down the project's goals, its architecture, and even its dependencies.
+        </p>
+
+        <h2>What really stood out to me</h2>
+        <p>
+            Beyond just the summaries, there are a few things that made me realize this is more than just another AI tool:
+        </p>
         <ul>
-            <li><strong>Automated Summaries:</strong> Get an instant overview of what a repository does and its primary goals.</li>
-            <li><strong>Architectural Insights:</strong> Understand the high-level design patterns and how different components interact.</li>
-            <li><strong>Topic Search:</strong> Ask questions about the codebase and get grounded answers cited directly from the source code.</li>
-            <li><strong>Dependency Mapping:</strong> Visualize how the project fits into the broader ecosystem.</li>
+            <li><strong>Architectural Overviews:</strong> It doesn't just list files; it explains the <em>patterns</em>. It tells you why things were built this way.</li>
+            <li><strong>Talking to the Code:</strong> You can actually ask questions like "Where is the authentication handled?" and get an answer with direct citations from the source.</li>
+            <li><strong>Instant Onboarding:</strong> For me, this is the biggest win. It turns hours of "digging through code" into minutes of guided exploration.</li>
         </ul>
 
-        <h2>Why It Matters</h2>
+        <h2>My Final Thoughts</h2>
         <p>
-            In a fast-paced environment like Google, the time saved by a tool like CodeWiki is invaluable. It reduces cognitive load and allows engineers to focus on building features rather than deciphering historical context.
+            For me, the most exciting part of using CodeWiki isn't just the technology—it's how it changes the <em>feeling</em> of diving into a new project. That initial stress is replaced by curiosity.
         </p>
-
         <p>
-            Whether you're a seasoned veteran or a new hire, having a "wiki" that is always up-to-date with the latest commits is a developer's dream.
-        </p>
-
-        <h2>Final Thoughts</h2>
-        <p>
-            CodeWiki represents the next step in development tools—where AI doesn't just write code, but helps us <em>understand</em> it. It's a glimpse into the future of collaborative engineering.
+            I think we're moving toward a future where we don't just work on codebases; we interact with them. It makes the whole process of engineering feel a lot more human, and I’m definitely looking forward to seeing how tools like this evolve.
         </p>
     </article>
 
