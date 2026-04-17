@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classical Bit vs Qubit: The Quantum Leap | Kuriseti Ravi Sri Teja</title>
+    <meta name="description" content="Exploring the fundamental differences between classical bits and quantum bits (qubits) and why it matters for the future of computing.">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/img/logo.jpeg" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Animate on Scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        .post-header {
+            padding: 150px 0 50px;
+            text-align: center;
+        }
+
+        .post-meta {
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .post-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 2rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            margin-bottom: 100px;
+        }
+
+        .post-content h2 {
+            margin: 2.5rem 0 1.5rem;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .post-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .hero-img {
+            width: 100%;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .post-content a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .post-content a:hover {
+            text-decoration: underline;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .comparison-table th {
+            background: rgba(168, 85, 247, 0.1);
+            color: var(--primary);
+        }
+
+        .quote-box {
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem 2rem;
+            background: rgba(168, 85, 247, 0.05);
+            margin: 2.5rem 0;
+            font-style: italic;
+            border-radius: 0 15px 15px 0;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .tech-tag {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--glass-border);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-glow">
+        <div class="glow-orb"></div>
+        <div class="glow-orb-2"></div>
+    </div>
+
+    <nav>
+        <div class="container">
+            <div class="logo">RAVI SRI TEJA</div>
+            <ul>
+                <li><a href="../index.html#home">Home</a></li>
+                <li><a href="../blog.html">Blog</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="post-header container">
+        <div data-aos="fade-down">
+            <a href="../blog.html" class="back-link">← Back to Blog</a>
+            <span class="post-meta">April 17, 2026 • Science & Technology</span>
+            <h1>Classical Bit vs Qubit: The Quantum Leap in Computing</h1>
+        </div>
+    </header>
+
+    <article class="post-content container" data-aos="fade-up">
+        <img src="../assets/img/qubit-vs-bit.png" alt="Classical Bit vs Qubit" class="hero-img">
+
+        <p>
+            For decades, the world has been built on a binary foundation. Every email you send, every video you stream, and every line of code I write ultimately boils down to a sequence of 0s and 1s. This is the realm of the <strong>Classical Bit</strong>. 
+        </p>
+
+        <p>
+            But as we push the boundaries of physics and silicon, a new contender has emerged: the <strong>Qubit</strong>. While it might sound like something out of science fiction, quantum computing is rapidly shifting from theoretical equations to a reality that could redefine how we solve the world's most complex problems.
+        </p>
+
+        <h2>The Classical Bit: Certainty in 0 and 1</h2>
+        <p>
+            Think of a classical bit like a light switch. It can either be <strong>on (1)</strong> or <strong>off (0)</strong>. There is no middle ground. If you have two bits, they can represent one of four states at any given time: 00, 01, 10, or 11. 
+        </p>
+        <p>
+            This deterministic nature is incredibly reliable, but it has a limit. As problems grow exponentially complex—like simulating the behavior of a single molecule—classical computers struggle to keep up because they have to process every possibility one by one.
+        </p>
+
+        <div class="quote-box">
+            "Classical bits are like a coin on a table—it's either heads or tails. Qubits are like a spinning coin—it's both until you stop and look at it."
+        </div>
+
+        <h2>The Qubit: Embracing Superposition</h2>
+        <p>
+            A <strong>Quantum Bit</strong> (or Qubit) operates on the principles of quantum mechanics. Unlike its classical counterpart, a qubit doesn't have to be just a 0 or a 1. Thanks to a phenomenon called <strong>superposition</strong>, it can exist in a state that is a complex combination of both simultaneously.
+        </p>
+        <p>
+            This means that while 2 classical bits can represent <em>one</em> of 4 states, 2 qubits can represent <em>all 4 states at the same time</em>. This parallelism allows quantum computers to explore a vast search space in a fraction of the time a classical computer would take.
+        </p>
+
+        <h2>Entanglement: The 'Spooky' Connection</h2>
+        <p>
+            Beyond superposition, qubits can also be <strong>entangled</strong>. When two qubits are entangled, the state of one is directly linked to the state of the other, no matter how far apart they are. Einstein famously called this "spooky action at a distance."
+        </p>
+        <p>
+            Entanglement allows quantum computers to process information in a highly coordinated way, enabling them to solve problems that involve massive amounts of interdependent data, such as supply chain optimization or complex financial modeling.
+        </p>
+
+        <h2>Fundamental Differences</h2>
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Classical Bit</th>
+                    <th>Qubit (Quantum Bit)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>State</td>
+                    <td>0 or 1</td>
+                    <td>Superposition of 0 and 1</td>
+                </tr>
+                <tr>
+                    <td>Logic</td>
+                    <td>Boolean Algebra</td>
+                    <td>Quantum Logic / Unitary Transforms</td>
+                </tr>
+                <tr>
+                    <td>Connectivity</td>
+                    <td>Independent unless wired</td>
+                    <td>Can be Entangled</td>
+                </tr>
+                <tr>
+                    <td>Complexity Handling</td>
+                    <td>Linear growth</td>
+                    <td>Exponential growth</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Final Thoughts</h2>
+        <p>
+            We aren't going to replace our laptops with quantum computers anytime soon. Classical bits are perfect for the everyday tasks we do. However, for the "impossible" problems—drug discovery, climate modeling, and breaking modern encryption—the qubit is our best hope.
+        </p>
+
+        <p>
+            We are currently in the "NISQ" (Noisy Intermediate-Scale Quantum) era, where we are building the first generation of useful quantum systems. It's an exciting time to be at the intersection of physics and computer science.
+        </p>
+
+        <div class="tech-stack">
+            <span class="tech-tag">Quantum Mechanics</span>
+            <span class="tech-tag">Computing</span>
+            <span class="tech-tag">Superposition</span>
+            <span class="tech-tag">Entanglement</span>
+            <span class="tech-tag">Future Tech</span>
+        </div>
+    </article>
+
+    <footer>
+        <div class="container">
+            <div class="socials">
+                <a href="https://github.com/RaviSriTejaKuriseti" target="_blank"><img src="../assets/img/ghub.png"
+                        alt="Github"></a>
+                <a href="https://www.linkedin.com/in/ravi-sri-teja-kuriseti-83b9681b0/" target="_blank"><img
+                        src="../assets/img/linkedin.png" alt="LinkedIn"></a>
+            </div>
+            <p>&copy; 2026 Kuriseti Ravi Sri Teja. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+
+</html>
