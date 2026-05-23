@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullback-Leibler (KL) Divergence: Measuring Information Loss | Kuriseti Ravi Sri Teja</title>
+    <meta name="description" content="An intuitive and mathematical deep dive into Kullback-Leibler (KL) Divergence, explaining how we measure the distance between probability distributions in AI and statistics.">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/img/logo.jpeg" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Animate on Scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- MathJax for rendering LaTeX formulas -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        .post-header {
+            padding: 150px 0 50px;
+            text-align: center;
+        }
+
+        .post-meta {
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .post-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 2rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            margin-bottom: 100px;
+        }
+
+        .post-content h2 {
+            margin: 2.5rem 0 1.2rem;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .post-content h3 {
+            margin: 1.8rem 0 1rem;
+            color: var(--secondary);
+            font-size: 1.4rem;
+        }
+
+        .post-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .hero-img {
+            width: 100%;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .post-content a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .post-content a:hover {
+            text-decoration: underline;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .comparison-table th {
+            background: rgba(168, 85, 247, 0.1);
+            color: var(--primary);
+        }
+
+        .quote-box {
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem 2rem;
+            background: rgba(168, 85, 247, 0.05);
+            margin: 2.5rem 0;
+            font-style: italic;
+            border-radius: 0 15px 15px 0;
+            font-size: 1.1rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 2rem;
+        }
+
+        .tech-tag {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Beautiful interactive math styles */
+        .math-block {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        /* High-quality code container styled with modern tokens */
+        .code-container {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-header {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            border-radius: 0 12px 0 12px;
+            border-left: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .code-container pre {
+            margin: 0;
+        }
+
+        .code-comment { color: #64748b; font-style: italic; }
+        .code-keyword { color: #f472b6; font-weight: 600; }
+        .code-builtin { color: #38bdf8; }
+        .code-string { color: #34d399; }
+        .code-number { color: #fbbf24; }
+        .code-function { color: #a78bfa; }
+
+        .post-content ul, .post-content ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        .post-content li {
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-main);
+        }
+
+        .post-content li strong {
+            color: var(--secondary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-glow">
+        <div class="glow-orb"></div>
+        <div class="glow-orb-2"></div>
+    </div>
+
+    <nav>
+        <div class="container">
+            <div class="logo">RAVI SRI TEJA</div>
+            <ul>
+                <li><a href="../index.html#home">Home</a></li>
+                <li><a href="../blog.html">Blog</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="post-header container">
+        <div data-aos="fade-down">
+            <a href="../blog.html" class="back-link">← Back to Blog</a>
+            <span class="post-meta">May 23, 2026 • Machine Learning & Statistics</span>
+            <h1>Kullback-Leibler (KL) Divergence: Measuring the Distance Between Probability Distributions</h1>
+        </div>
+    </header>
+
+    <article class="post-content container" data-aos="fade-up">
+        <img src="../assets/img/kl-divergence.png" alt="Kullback-Leibler (KL) Divergence Diagram" class="hero-img">
+
+        <p>
+            In the heart of modern machine learning lies a recurring question: <em>how close is our model's predictions to reality?</em> When we build generative models like Variational Autoencoders (VAEs) or optimize classifiers, we aren't just comparing single numbers. We are comparing entire, complex probability landscapes.
+        </p>
+
+        <p>
+            Enter <strong>Kullback-Leibler (KL) Divergence</strong>. Also known as relative entropy, KL divergence is an elegant, mathematically rigorous way to measure the difference between two probability distributions. Let's peel back the equations and build a deep, intuitive understanding of this crucial concept.
+        </p>
+
+        <h2>The Intuition: Coding and "Surplus Surprise"</h2>
+        <p>
+            To understand KL divergence, it helps to take a detour into information theory. Imagine you want to send weather updates to a friend using binary codes. If your city is mostly sunny ($90\%$ of the time) and rarely rainy ($10\%$), you would assign a very short code (like <code>0</code>) to "sunny" and a longer code (like <code>1</code>) to "rainy" to save bandwidth. This optimal encoding is designed specifically for your true local weather distribution, $P$.
+        </p>
+        <p>
+            Now, suppose your friend moves to a city where it rains $50\%$ of the time and is sunny $50\%$ of the time. If they try to use <em>your</em> codebook (designed for distribution $P$) to encode their weather distribution ($Q$), they will transmit more bits than necessary on average. 
+        </p>
+        <div class="quote-box">
+            <strong>KL Divergence</strong> measures exactly this overhead: the average number of <strong>extra bits</strong> (or "surplus surprise") required to encode events from a distribution $P$ using an encoding scheme optimized for a different distribution $Q$.
+        </div>
+
+        <h2>The Mathematical Formulation</h2>
+        <p>
+            Let's translate this intuition into algebra. For a discrete probability distribution, the KL divergence from $Q$ to $P$ (written as $D_{KL}(P \parallel Q)$) is defined as:
+        </p>
+
+        <div class="math-block">
+            $$D_{KL}(P \parallel Q) = \sum_{x \in \mathcal{X}} P(x) \log\left(\frac{P(x)}{Q(x)}\right)$$
+        </div>
+
+        <p>
+            If we are dealing with continuous variables, the sum is replaced by an integral:
+        </p>
+
+        <div class="math-block">
+            $$D_{KL}(P \parallel Q) = \int_{-\infty}^{\infty} p(x) \log\left(\frac{p(x)}{q(x)}\right) dx$$
+        </div>
+
+        <p>
+            Here, $P(x)$ represents the <strong>true distribution</strong> (the actual reality), and $Q(x)$ represents the <strong>approximating distribution</strong> (our model's assumption). The ratio $\frac{P(x)}{Q(x)}$ acts as a comparison metric: if $P(x) \approx Q(x)$, the log term is near zero. If they differ significantly, the divergence grows.
+        </p>
+
+        <h2>A Step-by-Step Numerical Example</h2>
+        <p>
+            Let's work through a concrete calculation. Imagine a highly biased coin where the true probability distribution $P$ of landing on Heads (H) or Tails (T) is:
+        </p>
+        <ul>
+            <li>$P(\text{Heads}) = 0.9$</li>
+            <li>$P(\text{Tails}) = 0.1$</li>
+        </ul>
+
+        <p>
+            Two data scientists propose different models to approximate this coin:
+        </p>
+        <ul>
+            <li><strong>Model 1 ($Q_1$):</strong> Assumes it is a completely fair coin: $Q_1(H) = 0.5$, $Q_1(T) = 0.5$.</li>
+            <li><strong>Model 2 ($Q_2$):</strong> Assumes it is slightly biased: $Q_2(H) = 0.8$, $Q_2(T) = 0.2$.</li>
+        </ul>
+
+        <p>
+            Let's calculate $D_{KL}(P \parallel Q)$ for both models using log base 2 (so our output is in <strong>bits</strong>):
+        </p>
+
+        <h3>1. Evaluating Model 1 (Fair Coin Hypothesis)</h3>
+        <div class="math-block">
+            $$D_{KL}(P \parallel Q_1) = P(H) \log_2\left(\frac{P(H)}{Q_1(H)}\right) + P(T) \log_2\left(\frac{P(T)}{Q_1(T)}\right)$$
+            $$D_{KL}(P \parallel Q_1) = 0.9 \log_2\left(\frac{0.9}{0.5}\right) + 0.1 \log_2\left(\frac{0.1}{0.5}\right)$$
+            $$D_{KL}(P \parallel Q_1) = 0.9 \log_2(1.8) + 0.1 \log_2(0.2)$$
+            $$D_{KL}(P \parallel Q_1) \approx 0.9(0.848) + 0.1(-2.322) \approx \mathbf{0.531 \text{ bits}}$$
+        </div>
+
+        <h3>2. Evaluating Model 2 (Slightly Biased Hypothesis)</h3>
+        <div class="math-block">
+            $$D_{KL}(P \parallel Q_2) = 0.9 \log_2\left(\frac{0.9}{0.8}\right) + 0.1 \log_2\left(\frac{0.1}{0.2}\right)$$
+            $$D_{KL}(P \parallel Q_2) = 0.9 \log_2(1.125) + 0.1 \log_2(0.5)$$
+            $$D_{KL}(P \parallel Q_2) \approx 0.9(0.170) + 0.1(-1.000) \approx \mathbf{0.053 \text{ bits}}$$
+        </div>
+
+        <p>
+            <strong>The verdict:</strong> The KL divergence for Model 2 ($0.053$ bits) is much lower than Model 1 ($0.531$ bits). This mathematically validates that $Q_2$ preserves far more information about our real system than the fair-coin model $Q_1$.
+        </p>
+
+        <h2>Properties of KL Divergence</h2>
+        <p>
+            Unlike traditional distance metrics (like Euclidean distance), KL divergence behaves in unique ways:
+        </p>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Behavior</th>
+                    <th>What it means</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Non-Negativity</strong></td>
+                    <td>$D_{KL}(P \parallel Q) \ge 0$</td>
+                    <td>You can never have "negative" information loss. It is $0$ if and only if $P = Q$.</td>
+                </tr>
+                <tr>
+                    <td><strong>Asymmetry</strong></td>
+                    <td>$D_{KL}(P \parallel Q) \neq D_{KL}(Q \parallel P)$</td>
+                    <td>The information lost in using $Q$ to model $P$ is not the same as using $P$ to model $Q$.</td>
+                </tr>
+                <tr>
+                    <td><strong>Not a Metric</strong></td>
+                    <td>Violates symmetry & triangle inequality</td>
+                    <td>Because it is asymmetric, it is strictly called a "divergence" rather than a "distance".</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>The Crux of Asymmetry</h3>
+        <p>
+            To see why asymmetry matters, calculate the reverse divergence for Model 1:
+        </p>
+        <div class="math-block">
+            $$D_{KL}(Q_1 \parallel P) = 0.5 \log_2\left(\frac{0.5}{0.9}\right) + 0.5 \log_2\left(\frac{0.5}{0.1}\right) \approx \mathbf{0.737 \text{ bits}}$$
+        </div>
+        <p>
+            Notice that $D_{KL}(P \parallel Q_1) = 0.531$ while $D_{KL}(Q_1 \parallel P) = 0.737$. In practice, this asymmetry is powerful. For instance, in variational inference, we choose whether to minimize $D_{KL}(P \parallel Q)$ (forward KL) or $D_{KL}(Q \parallel P)$ (reverse KL) depending on whether we want our model to cover all modes of the data or produce sharp, conservative samples.
+        </p>
+
+        <h2>Entropy, Cross-Entropy, and KL Divergence</h2>
+        <p>
+            We can unpack the mathematical formula for KL divergence to find a beautiful bridge between different concepts in information theory:
+        </p>
+        <div class="math-block">
+            $$D_{KL}(P \parallel Q) = \sum P(x) \log P(x) - \sum P(x) \log Q(x)$$
+            $$D_{KL}(P \parallel Q) = H(P, Q) - H(P)$$
+        </div>
+        <p>
+            Where:
+        </p>
+        <ul>
+            <li><strong>$H(P)$ is the Entropy</strong> of the true distribution (the minimum bits needed to encode the absolute truth).</li>
+            <li><strong>$H(P, Q)$ is the Cross-Entropy</strong> (the average bits used when we model $P$ with $Q$).</li>
+        </ul>
+        <p>
+            This equation reveals why Cross-Entropy Loss is the go-to loss function in machine learning classification. Since $H(P)$ depends solely on the true labels (which are fixed constants in training), minimizing Cross-Entropy $H(P, Q)$ is mathematically equivalent to minimizing the KL Divergence $D_{KL}(P \parallel Q)$!
+        </p>
+
+        <h2>Hands-on Implementation in Python</h2>
+        <p>
+            Here is a complete, clean Python script using NumPy and SciPy to calculate KL Divergence in both bits (log base 2) and nats (log base e):
+        </p>
+
+        <div class="code-container">
+            <div class="code-header">Python</div>
+            <pre><code><span class="code-keyword">import</span> numpy <span class="code-keyword">as</span> np
+<span class="code-keyword">from</span> scipy.special <span class="code-keyword">import</span> rel_entr
+
+<span class="code-comment"># 1. Define distributions</span>
+p = np.array([<span class="code-number">0.9</span>, <span class="code-number">0.1</span>])
+q1 = np.array([<span class="code-number">0.5</span>, <span class="code-number">0.5</span>])
+q2 = np.array([<span class="code-number">0.8</span>, <span class="code-number">0.2</span>])
+
+<span class="code-comment"># 2. Manual calculation (log base 2, output in bits)</span>
+<span class="code-keyword">def</span> <span class="code-function">kl_divergence_bits</span>(p, q):
+    <span class="code-keyword">return</span> np.sum(p * np.log2(p / q))
+
+kl_q1 = kl_divergence_bits(p, q1)
+kl_q2 = kl_divergence_bits(p, q2)
+
+print(<span class="code-string">f"KL(P || Q1): {kl_q1:.4f} bits"</span>)  <span class="code-comment"># Expected ~0.5311</span>
+print(<span class="code-string">f"KL(P || Q2): {kl_q2:.4f} bits"</span>)  <span class="code-comment"># Expected ~0.0530</span>
+
+<span class="code-comment"># 3. Using SciPy rel_entr (log base e, output in nats)</span>
+<span class="code-comment"># rel_entr(x, y) computes: x * log(x/y)</span>
+kl_scipy_q1 = np.sum(rel_entr(p, q1))
+kl_scipy_q2 = np.sum(rel_entr(p, q2))
+
+print(<span class="code-string">f"SciPy KL(P || Q1): {kl_scipy_q1:.4f} nats"</span>)
+print(<span class="code-string">f"SciPy KL(P || Q2): {kl_scipy_q2:.4f} nats"</span>)</code></pre>
+        </div>
+
+        <h2>Real-world Applications in AI</h2>
+        <ul>
+            <li>
+                <strong>Variational Autoencoders (VAEs):</strong> In generative models, we compress high-dimensional data into a low-dimensional latent space. We use KL divergence as a regularization term in the loss function to force the learned latent distribution to match a simple, easily sampleable Gaussian distribution $\mathcal{N}(0, I)$.
+            </li>
+            <li>
+                <strong>Proximal Policy Optimization (PPO):</strong> In reinforcement learning, if a policy changes too drastically in a single update step, training can become unstable. Algorithms like PPO and TRPO add a KL penalty to ensure the new policy distribution does not drift too far from the old policy.
+            </li>
+            <li>
+                <strong>Knowledge Distillation:</strong> To compress giant models into lightweight ones, we train a small "student" network to mimic a large "teacher" network. We use KL divergence to match the soft-max probability outputs of the student to the teacher.
+            </li>
+        </ul>
+
+        <h2>Final Thoughts</h2>
+        <p>
+            Kullback-Leibler Divergence is more than just a dry statistical formula; it is a fundamental bridge connecting probability, information theory, and deep learning. By treating comparison as a question of "surplus surprise," KL divergence provides an elegant, physically intuitive framework that allows our models to learn the shapes of reality.
+        </p>
+
+        <div class="tech-stack">
+            <span class="tech-tag">Machine Learning</span>
+            <span class="tech-tag">Information Theory</span>
+            <span class="tech-tag">Probability & Statistics</span>
+            <span class="code-tag tech-tag">Python & NumPy</span>
+            <span class="tech-tag">Deep Learning</span>
+        </div>
+    </article>
+
+    <footer>
+        <div class="container">
+            <div class="socials">
+                <a href="https://github.com/RaviSriTejaKuriseti" target="_blank"><img src="../assets/img/ghub.png"
+                        alt="Github"></a>
+                <a href="https://www.linkedin.com/in/ravi-sri-teja-kuriseti-83b9681b0/" target="_blank"><img
+                        src="../assets/img/linkedin.png" alt="LinkedIn"></a>
+            </div>
+            <p>&copy; 2026 Kuriseti Ravi Sri Teja. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+
+</html>
