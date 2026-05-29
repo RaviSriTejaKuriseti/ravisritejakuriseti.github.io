@@ -643,9 +643,9 @@ footer {
 /* Call to action & button redesigned */
 .twin-cta-container {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 2rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
 }
 
 .twin-btn-glow {
@@ -699,7 +699,7 @@ footer {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin: 0;
+    margin: 0 0 0 1.5rem;
 }
 
 .twin-powered a.powered-link {
@@ -809,6 +809,7 @@ footer {
 
     .twin-powered {
         justify-content: center;
+        margin-left: 0;
     }
 }
 
