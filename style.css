@@ -367,14 +367,15 @@ footer {
 /* Digital Twin Section */
 .twin-grid {
     display: grid;
-    grid-template-columns: 1.1fr 1.3fr;
-    gap: 4rem;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 4.5rem;
     align-items: center;
-    background: linear-gradient(135deg, rgba(168, 85, 247, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%);
-    border: 1px solid var(--border-color);
-    padding: 3rem;
-    border-radius: 30px;
-    backdrop-filter: blur(10px);
+    background: radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.12) 0%, rgba(6, 182, 212, 0.12) 100%), var(--glass);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    padding: 4.5rem 3.5rem;
+    border-radius: 36px;
+    backdrop-filter: blur(20px);
     position: relative;
     overflow: hidden;
 }
@@ -382,13 +383,14 @@ footer {
 .twin-grid::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
+    top: -30%;
+    right: -30%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
     z-index: 0;
     pointer-events: none;
+    filter: blur(50px);
 }
 
 .twin-visual {
@@ -399,19 +401,30 @@ footer {
     z-index: 1;
 }
 
-.twin-hologram {
+/* Hologram container with decorative tech rings */
+.twin-hologram-container {
     position: relative;
-    width: 280px;
-    height: 280px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, transparent 70%);
+    width: 320px;
+    height: 320px;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 0 50px rgba(168, 85, 247, 0.15);
-    border: 2px solid rgba(168, 85, 247, 0.3);
-    animation: float 6s ease-in-out infinite;
+}
+
+.twin-hologram {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, rgba(6, 182, 212, 0.1) 80%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 60px rgba(168, 85, 247, 0.3), inset 0 0 30px rgba(6, 182, 212, 0.2);
+    border: 2px solid rgba(168, 85, 247, 0.4);
+    animation: float 8s ease-in-out infinite;
     overflow: hidden;
+    z-index: 2;
 }
 
 .twin-hologram img {
@@ -419,121 +432,383 @@ footer {
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
-    filter: drop-shadow(0 0 20px rgba(6, 182, 212, 0.5));
+    filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.6)) contrast(1.1);
+    transition: transform 0.5s ease;
+}
+
+.twin-hologram:hover img {
+    transform: scale(1.06);
+}
+
+/* Decorative Outer Rings */
+.hologram-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px dashed rgba(6, 182, 212, 0.3);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.ring-outer {
+    width: 310px;
+    height: 310px;
+    border: 1.5px dashed rgba(168, 85, 247, 0.35);
+    animation: spinClockwise 25s linear infinite;
+}
+
+.ring-middle {
+    width: 285px;
+    height: 285px;
+    border: 1px solid rgba(6, 182, 212, 0.25);
+    border-top: 2px solid rgba(6, 182, 212, 0.6);
+    border-bottom: 2px solid rgba(6, 182, 212, 0.6);
+    animation: spinCounterClockwise 15s linear infinite;
+}
+
+.ring-inner {
+    width: 262px;
+    height: 262px;
+    border: 1.5px dotted rgba(168, 85, 247, 0.4);
+    animation: spinClockwise 35s linear infinite;
+}
+
+/* Hologram Scanning Line */
+.hologram-scanner {
+    position: absolute;
+    width: 250px;
+    height: 4px;
+    background: linear-gradient(to right, transparent, rgba(6, 182, 212, 0.8), transparent);
+    box-shadow: 0 0 12px rgba(6, 182, 212, 0.8);
+    border-radius: 50%;
+    animation: scan 4s ease-in-out infinite;
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* Futuristic Scanline Animation */
+@keyframes scan {
+    0%, 100% {
+        top: 35px;
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    50% {
+        top: 215px;
+    }
+}
+
+@keyframes spinClockwise {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes spinCounterClockwise {
+    0% { transform: rotate(360deg); }
+    100% { transform: rotate(0deg); }
 }
 
 @keyframes float {
     0%, 100% {
-        transform: translateY(0px) rotate(0deg);
-        border-color: rgba(168, 85, 247, 0.3);
-        box-shadow: 0 0 50px rgba(168, 85, 247, 0.15);
+        transform: translateY(0px);
+        box-shadow: 0 0 60px rgba(168, 85, 247, 0.3), inset 0 0 30px rgba(6, 182, 212, 0.2);
     }
     50% {
-        transform: translateY(-15px) rotate(3deg);
-        border-color: rgba(6, 182, 212, 0.5);
-        box-shadow: 0 0 70px rgba(6, 182, 212, 0.3);
+        transform: translateY(-12px);
+        box-shadow: 0 0 80px rgba(6, 182, 212, 0.45), inset 0 0 40px rgba(168, 85, 247, 0.3);
+        border-color: rgba(6, 182, 212, 0.6);
     }
 }
 
-.twin-info {
-    z-index: 1;
+/* Tech Status Badge */
+.hologram-status-badge {
+    position: absolute;
+    bottom: -15px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(6, 182, 212, 0.4);
+    padding: 6px 16px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--secondary);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), 0 0 10px rgba(6, 182, 212, 0.25);
+    z-index: 4;
+}
+
+.status-dot-pulse {
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #10b981;
+    animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+}
+
+/* Info side styled */
+.twin-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: linear-gradient(90deg, rgba(168, 85, 247, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-main);
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
 }
 
 .twin-subtitle {
     font-size: 1.1rem;
     color: var(--text-dim);
-    margin-bottom: 2rem;
+    margin-bottom: 2.2rem;
+    line-height: 1.7;
 }
 
 .twin-features {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2.8rem;
 }
 
 .twin-feature-item {
     display: flex;
     gap: 1.2rem;
     align-items: flex-start;
+    padding: 1.2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    transition: all 0.3s ease;
 }
 
-.twin-feature-item .feature-icon {
+.twin-feature-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(168, 85, 247, 0.2);
+    transform: translateX(5px);
+}
+
+.twin-feature-item .feature-icon-wrapper {
     font-size: 1.5rem;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 10px;
+    background: rgba(168, 85, 247, 0.1);
+    padding: 12px;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(168, 85, 247, 0.2);
     line-height: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.twin-feature-item:nth-child(even) .feature-icon-wrapper {
+    background: rgba(6, 182, 212, 0.1);
+    border-color: rgba(6, 182, 212, 0.2);
 }
 
 .twin-feature-item h4 {
     color: var(--text-main);
-    font-size: 1.1rem;
-    margin-bottom: 0.25rem;
+    font-size: 1.15rem;
+    margin-bottom: 0.35rem;
+    font-weight: 600;
 }
 
 .twin-feature-item p {
     color: var(--text-dim);
     font-size: 0.95rem;
+    line-height: 1.5;
 }
 
+/* Call to action & button redesigned */
 .twin-cta-container {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
-}
-
-.twin-btn {
-    display: inline-flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
-    padding: 14px 32px;
-    box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4);
+    gap: 2rem;
+}
+
+.twin-btn-glow {
+    position: relative;
+    display: inline-block;
+    padding: 2px;
+    border-radius: 50px;
     background: linear-gradient(to right, var(--secondary), var(--primary));
-    border: none;
+    text-decoration: none;
+    overflow: hidden;
     cursor: pointer;
-    font-size: 1rem;
+    box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3), 0 0 15px rgba(168, 85, 247, 0.2);
+    transition: all 0.3s ease;
 }
 
-.twin-btn svg {
-    transition: transform 0.3s;
+.twin-btn-glow .btn-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #1e293b;
+    color: white;
+    padding: 14px 34px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
 }
 
-.twin-btn:hover svg {
-    transform: translateX(5px);
+.twin-btn-glow:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(6, 182, 212, 0.45), 0 0 25px rgba(168, 85, 247, 0.35);
+}
+
+.twin-btn-glow:hover .btn-content {
+    background: transparent;
+    color: #ffffff;
+}
+
+.twin-btn-glow svg {
+    transition: transform 0.3s ease;
+}
+
+.twin-btn-glow:hover svg {
+    transform: translateX(6px);
 }
 
 .twin-powered {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--text-dim);
-    opacity: 0.8;
-    margin-left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
 }
 
-.twin-powered a {
+.twin-powered a.powered-link {
     color: var(--secondary);
     text-decoration: none;
-    font-weight: 600;
-    transition: 0.3s;
+    font-weight: 700;
+    position: relative;
+    transition: all 0.3s ease;
 }
 
-.twin-powered a:hover {
+.twin-powered a.powered-link::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 1.5px;
+    bottom: -2px;
+    left: 0;
+    background-color: var(--primary);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.twin-powered a.powered-link:hover {
     color: var(--primary);
-    text-decoration: underline;
+}
+
+.twin-powered a.powered-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
 }
 
 /* Responsive */
 @media (max-width: 992px) {
     .twin-grid {
         grid-template-columns: 1fr;
-        gap: 3rem;
-        padding: 2rem;
+        gap: 3.5rem;
+        padding: 3rem 2rem;
     }
     
     .twin-visual {
         order: -1;
+    }
+}
+
+@media (max-width: 576px) {
+    .twin-hologram-container {
+        width: 280px;
+        height: 280px;
+    }
+
+    .twin-hologram {
+        width: 220px;
+        height: 220px;
+    }
+
+    .ring-outer {
+        width: 280px;
+        height: 280px;
+    }
+
+    .ring-middle {
+        width: 255px;
+        height: 255px;
+    }
+
+    .ring-inner {
+        width: 232px;
+        height: 232px;
+    }
+
+    .hologram-scanner {
+        width: 220px;
+    }
+
+    @keyframes scan {
+        0%, 100% {
+            top: 25px;
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        50% {
+            top: 185px;
+        }
+    }
+
+    .twin-grid {
+        padding: 2.5rem 1.5rem;
+    }
+
+    .twin-cta-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+        text-align: center;
+    }
+
+    .twin-btn-glow .btn-content {
+        justify-content: center;
+        padding: 12px 24px;
+    }
+
+    .twin-powered {
+        justify-content: center;
     }
 }
 

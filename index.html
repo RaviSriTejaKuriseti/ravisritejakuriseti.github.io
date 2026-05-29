@@ -78,38 +78,63 @@
   <section id="digital-twin" class="container">
     <div class="twin-grid" data-aos="fade-up">
       <div class="twin-visual">
-        <div class="twin-hologram">
-          <img src="./assets/img/digital_twin.png" alt="Digital Twin Avatar">
+        <div class="twin-hologram-container">
+          <!-- Decorative sci-fi concentric rings -->
+          <div class="hologram-ring ring-outer"></div>
+          <div class="hologram-ring ring-middle"></div>
+          <div class="hologram-ring ring-inner"></div>
+          
+          <!-- Moving vertical scanning laser -->
+          <div class="hologram-scanner"></div>
+          
+          <!-- Glowing circular avatar container -->
+          <div class="twin-hologram">
+            <img src="./assets/img/digital_twin.png" alt="Digital Twin Avatar">
+          </div>
+          
+          <!-- Active status badge -->
+          <div class="hologram-status-badge">
+            <span class="status-dot-pulse"></span>
+            <span>SYSTEM: READY</span>
+          </div>
         </div>
       </div>
+      
       <div class="twin-info">
+        <span class="twin-badge">AI Cognitive Twin</span>
         <h2 class="section-title">Talk to My <span>Digital Twin</span></h2>
-        <p class="twin-subtitle">Have questions about my projects, research, or professional journey? Converse with my custom-trained AI twin in real-time!</p>
+        <p class="twin-subtitle">Have questions about my research, professional journey, or projects? Converse directly with my custom-trained neural clone in real-time.</p>
         
         <div class="twin-features">
           <div class="twin-feature-item">
-            <span class="feature-icon">💬</span>
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">💬</span>
+            </div>
             <div>
               <h4>Real-Time Conversations</h4>
-              <p>Get instant, precise answers about my experience and technical background.</p>
+              <p>Ask anything about my engineering path and get precise, instant insights.</p>
             </div>
           </div>
           <div class="twin-feature-item">
-            <span class="feature-icon">🧠</span>
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">🧠</span>
+            </div>
             <div>
               <h4>Custom Knowledge Base</h4>
-              <p>Trained deeply on my academic journey at IIT Delhi and engineering career.</p>
+              <p>Deeply aligned with my academic journey at IIT Delhi and ML systems experience.</p>
             </div>
           </div>
         </div>
 
         <div class="twin-cta-container">
-          <a href="https://www.asksila.com/ravi-sri-teja-kuriseti" target="_blank" class="btn btn-primary twin-btn">
-            <span>Talk to My Digital Twin</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          <a href="https://www.asksila.com/ravi-sri-teja-kuriseti" target="_blank" class="twin-btn-glow">
+            <span class="btn-content">
+              <span>Talk to My Digital Twin</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </span>
           </a>
           <span class="twin-powered">
-            Powered by <a href="https://viven.ai" target="_blank">viven.ai</a>
+            Powered by <a href="https://viven.ai" target="_blank" class="powered-link">viven.ai</a>
           </span>
         </div>
       </div>
