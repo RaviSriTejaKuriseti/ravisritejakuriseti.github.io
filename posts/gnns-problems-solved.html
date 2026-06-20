@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction to GNNs and the Problems They Solve | Kuriseti Ravi Sri Teja</title>
+    <meta name="description" content="An intuitive guide to Graph Neural Networks (GNNs), how they work via message passing, and the real-world problems they solve.">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/img/logo.jpeg" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Animate on Scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        .post-header {
+            padding: 150px 0 50px;
+            text-align: center;
+        }
+
+        .post-meta {
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .post-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 2rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            margin-bottom: 100px;
+        }
+
+        .post-content h2 {
+            margin: 2.5rem 0 1.5rem;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .post-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .hero-img {
+            width: 100%;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .post-content a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .post-content a:hover {
+            text-decoration: underline;
+        }
+
+        .highlight-box {
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem 2rem;
+            background: rgba(168, 85, 247, 0.05);
+            margin: 2.5rem 0;
+            border-radius: 0 15px 15px 0;
+        }
+
+        .highlight-box h3 {
+            margin-top: 0;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            font-size: 1rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .tech-tag {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        ul.problem-list {
+            margin-bottom: 1.5rem;
+            padding-left: 20px;
+        }
+
+        ul.problem-list li {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        ul.problem-list strong {
+            color: var(--secondary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-glow">
+        <div class="glow-orb"></div>
+        <div class="glow-orb-2"></div>
+    </div>
+
+    <nav>
+        <div class="container">
+            <div class="logo">RAVI SRI TEJA</div>
+            <ul>
+                <li><a href="../index.html#home">Home</a></li>
+                <li><a href="../blog.html">Blog</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="post-header container">
+        <div data-aos="fade-down">
+            <a href="../blog.html" class="back-link">← Back to Blog</a>
+            <span class="post-meta">June 20, 2026 • Machine Learning</span>
+            <h1>Graph Neural Networks: Understanding GNNs and the Problems They Solve</h1>
+        </div>
+    </header>
+
+    <article class="post-content container" data-aos="fade-up">
+        <img src="../assets/img/gnn-visualization.jpg" alt="Graph Neural Network Visualization" class="hero-img">
+
+        <p>
+            Much of the classical deep learning success has been dominated by grid-like structures: Convolutional Neural Networks (CNNs) for 2D images, and Recurrent Neural Networks (RNNs) or Transformers for 1D text sequences. 
+        </p>
+
+        <p>
+            However, real-world data is rarely that tidy. From social connections and financial transaction networks to the molecular bindings of life-saving drugs, data often exists naturally as <strong>graphs</strong>—networks of interconnected entities. To learn directly from these non-Euclidean structures, we rely on <strong>Graph Neural Networks (GNNs)</strong>.
+        </p>
+
+        <h2>What is a Graph Neural Network?</h2>
+        <p>
+            A graph consists of <strong>Nodes (vertices)</strong> representing entities and <strong>Edges (links)</strong> representing the relationships between them. Nodes and edges can both have feature vectors associated with them.
+        </p>
+        <p>
+            Unlike traditional neural networks which require flattening graph data (and in the process losing vital structural topology), GNNs preserve graph integrity. They use the connections in the graph to pass information between nodes, enabling the neural network to learn embeddings that represent both individual features and relational structures.
+        </p>
+
+        <div class="highlight-box">
+            <h3>The Core Secret: Message Passing</h3>
+            <p>
+                GNNs work through a process called <strong>neighborhood aggregation</strong> or <strong>message passing</strong>. In each layer, every node gathers feature representations from its immediate neighbors, aggregates them (using order-invariant operators like sum, mean, or max), and combines them with its own feature representation to update its state. Over <em>L</em> layers, a node successfully encodes information from its <em>L</em>-hop neighbors.
+            </p>
+        </div>
+
+        <h2>Three Major Problems GNNs Solve</h2>
+        <p>
+            By capturing structural context, GNNs let us perform predictions at three different granularities of a graph:
+        </p>
+
+        <ul class="problem-list">
+            <li>
+                <strong>1. Node Classification (Entity Level):</strong> 
+                Predicting the label or property of a single node based on its characteristics and neighbors.
+                <br>
+                <em>Example:</em> Detecting fraudulent users or bot accounts on a transaction network. Even if a bot mimics normal behavior, its structural connections to known fraudulent clusters expose it.
+            </li>
+            <li>
+                <strong>2. Link Prediction (Edge Level):</strong> 
+                Determining the likelihood of a connection forming or existing between two nodes.
+                <br>
+                <em>Example:</em> Recommender systems (predicting if a user will purchase a specific product represented as user-to-item edges) and social network recommendations (suggesting connections).
+            </li>
+            <li>
+                <strong>3. Graph Classification (Graph Level):</strong> 
+                Classifying the entire graph structure into a particular category.
+                <br>
+                <em>Example:</em> Drug discovery. Molecules are naturally represented as graphs where atoms are nodes and chemical bonds are edges. GNNs can predict whether a molecular graph represents a toxic compound or a potential cure for a disease.
+            </li>
+        </ul>
+
+        <h2>Looking Ahead</h2>
+        <p>
+            As graph data grows in size and complexity, scaling GNNs to handle billions of nodes has become a major engineering focus. Modern frameworks like <strong>PyTorch Geometric (PyG)</strong> and <strong>Deep Graph Library (DGL)</strong> have made GNNs accessible to ML practitioners, enabling rapid iterations. 
+        </p>
+        <p>
+            Whether it's building better fraud detection systems, uncovering the secrets of biology, or scaling industrial recommendation engines, GNNs represent a fundamental shift in how neural networks perceive relational datasets.
+        </p>
+
+        <div class="tech-stack">
+            <span class="tech-tag">Machine Learning</span>
+            <span class="tech-tag">GNNs</span>
+            <span class="tech-tag">Graph Theory</span>
+            <span class="tech-tag">Deep Learning</span>
+            <span class="tech-tag">PyTorch Geometric</span>
+        </div>
+    </article>
+
+    <footer>
+        <div class="container">
+            <div class="socials">
+                <a href="https://github.com/RaviSriTejaKuriseti" target="_blank"><img src="../assets/img/ghub.png"
+                        alt="Github"></a>
+                <a href="https://www.linkedin.com/in/ravi-sri-teja-kuriseti-83b9681b0/" target="_blank"><img
+                        src="../assets/img/linkedin.png" alt="LinkedIn"></a>
+            </div>
+            <p>&copy; 2026 Kuriseti Ravi Sri Teja. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+
+</html>
