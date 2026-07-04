@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elo Rating in AI Evaluation: The Math, Modern Leaderboards, and Bradley-Terry MLE | Kuriseti Ravi Sri Teja</title>
+    <meta name="description" content="A comprehensive mathematical and practical guide to the Elo rating system and its application to modern LLM evaluation in systems like LMSYS Chatbot Arena.">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/img/logo.jpeg" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Animate on Scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- MathJax for rendering LaTeX formulas -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        .post-header {
+            padding: 150px 0 50px;
+            text-align: center;
+        }
+
+        .post-meta {
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .post-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 50px 2rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            margin-bottom: 100px;
+        }
+
+        .post-content h2 {
+            margin: 2.5rem 0 1.2rem;
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .post-content h3 {
+            margin: 1.8rem 0 1rem;
+            color: var(--secondary);
+            font-size: 1.4rem;
+        }
+
+        .post-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+
+        .hero-img {
+            width: 100%;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .post-content a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .post-content a:hover {
+            text-decoration: underline;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .comparison-table th {
+            background: rgba(168, 85, 247, 0.1);
+            color: var(--primary);
+        }
+
+        .quote-box {
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem 2rem;
+            background: rgba(168, 85, 247, 0.05);
+            margin: 2.5rem 0;
+            font-style: italic;
+            border-radius: 0 15px 15px 0;
+            font-size: 1.1rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 2rem;
+        }
+
+        .tech-tag {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Beautiful interactive math styles */
+        .math-block {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        /* High-quality code container styled with modern tokens */
+        .code-container {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-header {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            border-radius: 0 12px 0 12px;
+            border-left: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--glass-border);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .code-container pre {
+            margin: 0;
+        }
+
+        .code-comment { color: #64748b; font-style: italic; }
+        .code-keyword { color: #f472b6; font-weight: 600; }
+        .code-builtin { color: #38bdf8; }
+        .code-string { color: #34d399; }
+        .code-number { color: #fbbf24; }
+        .code-function { color: #a78bfa; }
+
+        .post-content ul, .post-content ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        .post-content li {
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-main);
+        }
+
+        .post-content li strong {
+            color: var(--secondary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-glow">
+        <div class="glow-orb"></div>
+        <div class="glow-orb-2"></div>
+    </div>
+
+    <nav>
+        <div class="container">
+            <div class="logo">RAVI SRI TEJA</div>
+            <ul>
+                <li><a href="../index.html#home">Home</a></li>
+                <li><a href="../blog.html">Blog</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="post-header container">
+        <div data-aos="fade-down">
+            <a href="../blog.html" class="back-link">← Back to Blog</a>
+            <span class="post-meta">July 4, 2026 • Machine Learning & Evaluation</span>
+            <h1>Elo Rating in AI Evaluation: The Math, Modern Leaderboards, and Bradley-Terry MLE</h1>
+        </div>
+    </header>
+
+    <article class="post-content container" data-aos="fade-up">
+        <img src="../assets/img/elo-rating.jpg" alt="Elo Rating AI Evaluation Banner" class="hero-img">
+
+        <p>
+            How do we know if GPT-4o is truly better than Claude 3.5 Sonnet? Or if Gemini 1.5 Pro outperforms Llama 3? In the early days of deep learning, evaluating models was straightforward. We used static benchmarks like <strong>MMLU</strong> (multi-task language understanding), <strong>GSM8K</strong> (grade-school math), or <strong>HumanEval</strong> (coding).
+        </p>
+
+        <p>
+            But as LLMs have transitioned into highly conversational, open-ended assistants, static benchmarks are failing. Models saturate them quickly, and they are notoriously vulnerable to <em>test-set contamination</em>—where benchmark questions leak into the models' training data. 
+        </p>
+
+        <p>
+            To solve this, the AI community looked back at a 60-year-old chess ranking algorithm: the <strong>Elo Rating System</strong>. Today, systems like LMSYS Chatbot Arena rely on Elo to crowdsource human preferences, creating a dynamic, contamination-resistant, and highly aligned standard for model evaluation.
+        </p>
+
+        <h2>The Origin of Elo</h2>
+        <p>
+            Before the 1960s, chess players were ranked using numerical systems that did not reflect the relative strength of opponents. A master beating a novice earned the same points as beating another master. In 1960, Arpad Elo, a Hungarian-American physics professor and chess master, introduced a statistical, self-correcting system. 
+        </p>
+
+        <div class="quote-box">
+            "The rating of a player is a statistical estimation of their performance capability, determined from their performance in comparison with others." — Arpad Elo
+        </div>
+
+        <p>
+            Rather than looking at absolute scores, Elo framed chess games as probabilistic events. The rating difference between two players predicts the likelihood of who will win.
+        </p>
+
+        <h2>The Mathematics of Elo</h2>
+        <p>
+            Suppose we have two players (or AI models), $A$ and $B$, with current Elo ratings $R_A$ and $R_B$.
+        </p>
+
+        <h3>1. The Logistic Expected Score</h3>
+        <p>
+            The expected score represents the probability that Player $A$ will win against Player $B$. Using a logistic curve, this is defined as:
+        </p>
+
+        <div class="math-block">
+            $$E_A = \frac{1}{1 + 10^{(R_B - R_A)/400}}$$
+        </div>
+
+        <p>
+            Similarly, the expected score for $B$ is:
+        </p>
+
+        <div class="math-block">
+            $$E_B = \frac{1}{1 + 10^{(R_A - R_B)/400}} = 1 - E_A$$
+        </div>
+
+        <p>
+            The scale factor of $400$ is a historical convention from chess. If $R_A - R_B = 400$, then $E_A = 1 / (1 + 10^{-1}) \approx 0.91$. This means a player rated 400 points higher than their opponent has roughly a $91\%$ chance of winning. If their ratings are identical ($R_A = R_B$), then $E_A = 0.5$, indicating a balanced matchup.
+        </p>
+
+        <h3>2. The Self-Correcting Rating Update</h3>
+        <p>
+            After a match is played, the actual outcome $S_A$ is recorded:
+        </p>
+        <ul>
+            <li>$S_A = 1$ if Player $A$ wins.</li>
+            <li>$S_A = 0.5$ in the case of a draw.</li>
+            <li>$S_A = 0$ if Player $B$ wins.</li>
+        </ul>
+        <p>
+            We then update Player $A$'s rating using the formula:
+        </p>
+
+        <div class="math-block">
+            $$R'_A = R_A + K(S_A - E_A)$$
+        </div>
+
+        <p>
+            Here, $K$ represents the <strong>K-factor</strong> (the learning rate or sensitivity constant). Let's look at how the prediction error $(S_A - E_A)$ drives the update:
+        </p>
+        <ul>
+            <li><strong>Expected Outcome:</strong> If a highly-rated model ($E_A = 0.90$) wins against a weak model ($S_A = 1$), the update is minor: $+K(0.10)$.</li>
+            <li><strong>The Upset:</strong> If the highly-rated model loses ($S_A = 0$), the rating drops significantly: $-K(0.90)$. Meanwhile, the weaker model gains a massive boost.</li>
+        </ul>
+
+        <h2>Why Elo is King in LLM Evaluation</h2>
+        <p>
+            Static benchmarks struggle with nuance, but Elo-based human-in-the-loop arenas (like LMSYS) offer several unique advantages:
+        </p>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Feature</th>
+                    <th>Static Benchmarks (e.g., MMLU)</th>
+                    <th>Elo-based Arenas (e.g., LMSYS)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Evaluation Method</strong></td>
+                    <td>Multiple-choice / Exact string matching</td>
+                    <td>Pairwise comparison by humans or LLM-judges</td>
+                </tr>
+                <tr>
+                    <td><strong>Contamination Risk</strong></td>
+                    <td>High (questions leak into training text)</td>
+                    <td>Extremely low (queries are user-generated & live)</td>
+                </tr>
+                <tr>
+                    <td><strong>Saturability</strong></td>
+                    <td>High (models hit 95%+ accuracy)</td>
+                    <td>Open-ended (ratings scale dynamically with skill)</td>
+                </tr>
+                <tr>
+                    <td><strong>Alignment</strong></td>
+                    <td>Correlates poorly with real-world utility</td>
+                    <td>Directly measures human preferences and helpfulness</td>
+                </tr>
+                <tr>
+                    <td><strong>Inter-Annotator Scale</strong></td>
+                    <td>N/A</td>
+                    <td>Highly consistent (eliminates scale drift)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>Beyond Online Updates: The Bradley-Terry Model</h2>
+        <p>
+            In professional applications like LMSYS Chatbot Arena, updating ratings one-by-one (online Elo updates) is problematic because the final ratings depend on the chronological order of the matches, and online updates have high variance.
+        </p>
+        <p>
+            Instead, we model the system using the <strong>Bradley-Terry (BT) model</strong>. The BT model assumes each model $i$ has a latent quality score (log-ability) $r_i$. The probability that model $i$ beats model $j$ is given by:
+        </p>
+        <div class="math-block">
+            $$P(i \succ j) = \frac{e^{r_i}}{e^{r_i} + e^{r_j}} = \frac{1}{1 + e^{-(r_i - r_j)}}$$
+        </div>
+        <p>
+            This is mathematically identical to a <strong>Logistic Regression</strong> model without an intercept! By framing model comparisons as a classification problem, we can feed all historic match results into a logistic regression solver. The learned weights $w_i$ represent the log-abilities $r_i$, which we scale to classic Elo ratings using:
+        </p>
+        <div class="math-block">
+            $$\text{Elo}_i = w_i \times \frac{400}{\ln(10)} \approx w_i \times 173.7178$$
+        </div>
+
+        <h2>Hands-on Implementation in Python</h2>
+        <p>
+            The following Python code demonstrates both: the classic, game-by-game Elo update method, and the batch Bradley-Terry Maximum Likelihood Estimation (MLE) using logistic regression.
+        </p>
+
+        <div class="code-container">
+            <div class="code-header">Python</div>
+            <pre><code><span class="code-keyword">import</span> numpy <span class="code-keyword">as</span> np
+<span class="code-keyword">from</span> sklearn.linear_model <span class="code-keyword">import</span> LogisticRegression
+
+<span class="code-comment"># --- METHOD 1: Classic Online Elo Update ---</span>
+<span class="code-keyword">def</span> <span class="code-function">update_elo</span>(rating_a, rating_b, score_a, k=<span class="code-number">32</span>):
+    <span class="code-comment"># Expected probability of A winning</span>
+    expected_a = <span class="code-number">1</span> / (<span class="code-number">1</span> + <span class="code-number">10</span> ** ((rating_b - rating_a) / <span class="code-number">400</span>))
+    expected_b = <span class="code-number">1</span> - expected_a
+    
+    score_b = <span class="code-number">1</span> - score_a
+    
+    <span class="code-comment"># Calculate new ratings</span>
+    new_a = rating_a + k * (score_a - expected_a)
+    new_b = rating_b + k * (score_b - expected_b)
+    <span class="code-keyword">return</span> new_a, new_b
+
+<span class="code-comment"># --- METHOD 2: Bradley-Terry MLE via Logistic Regression ---</span>
+<span class="code-keyword">def</span> <span class="code-function">fit_bradley_terry</span>(models, matchups):
+    <span class="code-comment">"""
+    models: list of model names
+    matchups: list of tuples (model_a, model_b, winner)
+              winner: 1 if model_a won, 0 if model_b won
+    """</span>
+    model_idx = {model: i <span class="code-keyword">for</span> i, model <span class="code-keyword">in</span> <span class="code-builtin">enumerate</span>(models)}
+    num_models = <span class="code-builtin">len</span>(models)
+    
+    X = []
+    y = []
+    
+    <span class="code-keyword">for</span> model_a, model_b, winner <span class="code-keyword">in</span> matchups:
+        <span class="code-comment"># Feature vector: +1 for model_a, -1 for model_b</span>
+        x = np.zeros(num_models)
+        x[model_idx[model_a]] = <span class="code-number">1</span>
+        x[model_idx[model_b]] = -<span class="code-number">1</span>
+        
+        X.append(x)
+        y.append(winner)
+        
+    X = np.array(X)
+    y = np.array(y)
+    
+    <span class="code-comment"># Fit logistic regression without intercept</span>
+    lr = LogisticRegression(fit_intercept=<span class="code-keyword">False</span>, C=<span class="code-number">1e5</span>)  <span class="code-comment"># High C -> no regularization</span>
+    lr.fit(X, y)
+    
+    <span class="code-comment"># Extract weights (log-abilities)</span>
+    weights = lr.coef_[<span class="code-number">0</span>]
+    
+    <span class="code-comment"># Anchor rating of the first model to 1000 Elo for scaling</span>
+    scale = <span class="code-number">400</span> / np.log(<span class="code-number">10</span>)
+    elo_ratings = weights * scale
+    
+    <span class="code-comment"># Normalize so the mean rating is 1200</span>
+    elo_ratings = elo_ratings - np.mean(elo_ratings) + <span class="code-number">1200</span>
+    
+    <span class="code-keyword">return</span> {model: <span class="code-builtin">round</span>(elo_ratings[i], <span class="code-number">1</span>) <span class="code-keyword">for</span> model, i <span class="code-keyword">in</span> model_idx.items()}
+
+<span class="code-comment"># --- Execution Example ---</span>
+<span class="code-keyword">if</span> __name__ == <span class="code-string">"__main__"</span>:
+    <span class="code-comment"># 1. Classic Elo test</span>
+    r_a, r_b = <span class="code-number">1200</span>, <span class="code-number">1000</span>
+    print(<span class="code-string">f"Before: Model A ({r_a}) vs Model B ({r_b})"</span>)
+    new_a, new_b = update_elo(r_a, r_b, score_a=<span class="code-number">0</span>)  <span class="code-comment"># Model B upsets Model A!</span>
+    print(<span class="code-string">f"After Upset: Model A ({new_a:.1f}) vs Model B ({new_b:.1f})\n"</span>)
+
+    <span class="code-comment"># 2. Batch Bradley-Terry MLE</span>
+    model_list = [<span class="code-string">"Model-Alpha"</span>, <span class="code-string">"Model-Beta"</span>, <span class="code-string">"Model-Gamma"</span>]
+    match_history = [
+        (<span class="code-string">"Model-Alpha"</span>, <span class="code-string">"Model-Beta"</span>, <span class="code-number">1</span>),  <span class="code-comment"># Alpha beats Beta</span>
+        (<span class="code-string">"Model-Alpha"</span>, <span class="code-string">"Model-Beta"</span>, <span class="code-number">1</span>),  <span class="code-comment"># Alpha beats Beta</span>
+        (<span class="code-string">"Model-Beta"</span>, <span class="code-string">"Model-Gamma"</span>, <span class="code-number">1</span>),  <span class="code-comment"># Beta beats Gamma</span>
+        (<span class="code-string">"Model-Gamma"</span>, <span class="code-string">"Model-Alpha"</span>, <span class="code-number">0</span>),  <span class="code-comment"># Alpha beats Gamma</span>
+        (<span class="code-string">"Model-Beta"</span>, <span class="code-string">"Model-Gamma"</span>, <span class="code-number">0</span>)   <span class="code-comment"># Gamma beats Beta</span>
+    ]
+    
+    ratings = fit_bradley_terry(model_list, match_history)
+    print(<span class="code-string">"Bradley-Terry MLE Ratings:"</span>)
+    <span class="code-keyword">for</span> m, r <span class="code-keyword">in</span> ratings.items():
+        print(<span class="code-string">f" - {m}: {r} Elo"</span>)</code></pre>
+        </div>
+
+        <h2>The Blind Spots of Elo in AI</h2>
+        <p>
+            While Elo is incredibly powerful, it isn't perfect for AI evaluation. The main challenges include:
+        </p>
+        <ul>
+            <li>
+                <strong>Verbosity Bias:</strong> Human annotators often prefer longer, structured answers even if they contain subtle factual errors or hallucinations.
+            </li>
+            <li>
+                <strong>Style & Formatting Bias:</strong> Models with clean markdown, bullet points, and polite phrasing generally score higher, biasing the metric toward presentation rather than deep reasoning.
+            </li>
+            <li>
+                <strong>Intransitivity (Rock-Paper-Scissors):</strong> Elo relies on the mathematical assumption of transitivity ($A \succ B$ and $B \succ C \implies A \succ C$). However, in AI, Model A might excel at coding but fail at creative writing, leading to cyclic preference loops.
+            </li>
+            <li>
+                <strong>Position Bias:</strong> In pairwise comparisons, humans are slightly more likely to select the model presented first (A) rather than second (B). Modern platforms mitigate this by randomizing the presentation order.
+            </li>
+        </ul>
+
+        <h2>Final Thoughts</h2>
+        <p>
+            The Elo rating system has evolved from a chess scoring tool into a cornerstone of AI evaluation. By treating evaluation as a dynamic competition rather than a static exam, Elo helps us measure LLMs in a way that matches actual human utility. While biases exist, mitigation techniques like Bradley-Terry batch regression and randomized ordering ensure that Elo remains one of the most reliable and trusted standards in the machine learning ecosystem.
+        </p>
+
+        <div class="tech-stack">
+            <span class="tech-tag">LLM Evaluation</span>
+            <span class="tech-tag">Game Theory & Chess</span>
+            <span class="tech-tag">Probability & Statistics</span>
+            <span class="code-tag tech-tag">Python & Scikit-Learn</span>
+            <span class="tech-tag">LMSYS Chatbot Arena</span>
+        </div>
+    </article>
+
+    <footer>
+        <div class="container">
+            <div class="socials">
+                <a href="https://github.com/RaviSriTejaKuriseti" target="_blank"><img src="../assets/img/ghub.png"
+                        alt="Github"></a>
+                <a href="https://www.linkedin.com/in/ravi-sri-teja-kuriseti-83b9681b0/" target="_blank"><img
+                        src="../assets/img/linkedin.png" alt="LinkedIn"></a>
+            </div>
+            <p>&copy; 2026 Kuriseti Ravi Sri Teja. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+
+</html>
