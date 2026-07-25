@@ -482,7 +482,7 @@ submitBtn.<span class="code-function">addEventListener</span>(<span class="code-
             LLMs are probabilistic reasoning engines. They do not run compiled C++ code directly, nor do they click pixel buttons like a human. They need an interface standard that lets them dynamically discover data schemas, inspect environment resources, and invoke tool functions safely.
         </div>
 
-        <p>Created to solve this exact bottleneck, <strong>Model Context Protocol (MCP)</strong> is an open protocol designed by Anthropic and adopted across the AI ecosystem. MCP standardizes how AI applications (<strong>MCP Clients / Hosts</strong>) securely connect to data sources, local filesystems, database instances, and external APIs (<strong>MCP Servers</strong>).</p>
+        <p>Created to solve this exact bottleneck, <strong>Model Context Protocol (MCP)</strong> is an open standard initially created by Anthropic and transferred to the <strong>Agentic AI Foundation (AAIF)</strong> under the <strong>Linux Foundation</strong>—co-sponsored by industry leaders including Anthropic, OpenAI, Google, Microsoft, AWS, and Block. MCP standardizes how AI applications (<strong>MCP Clients / Hosts</strong>) securely connect to data sources, local filesystems, database instances, enterprise platforms, and external APIs (<strong>MCP Servers</strong>).</p>
 
         <div class="architecture-diagram">
             <h3>Unified Architecture: How MCP Bridges Systems</h3>
@@ -498,7 +498,7 @@ submitBtn.<span class="code-function">addEventListener</span>(<span class="code-
         </div>
 
         <h3>The Three Primitives of MCP</h3>
-        <p>MCP defines three core primitives that an MCP Server exposes to an AI Client over standard streams (stdio) or SSE (Server-Sent Events) using <strong>JSON-RPC 2.0</strong>:</p>
+        <p>MCP defines three core primitives that an MCP Server exposes to an AI Client over standard streams (<code>stdio</code>) or HTTP/SSE using <strong>JSON-RPC 2.0</strong>:</p>
 
         <ol>
             <li><strong>Resources:</strong> Passive read-only data sources (file contents, logs, system specs, database rows) identified by standardized URIs (e.g. <code>file:///logs/app.log</code> or <code>postgres://users/schema</code>).</li>
@@ -506,18 +506,30 @@ submitBtn.<span class="code-function">addEventListener</span>(<span class="code-
             <li><strong>Tools:</strong> Executable side-effect operations (file creation, SQL execution, git operations, terminal commands, web API requests) complete with JSON Schema input declarations that the LLM can auto-invoke.</li>
         </ol>
 
+        <h3>Key Protocol Evolution & Specification Milestones</h3>
+        <p>As MCP rapidly grew into the <em>de facto</em> standard across millions of developer environments, the specification evolved to address enterprise scalability, security, and rich user experiences:</p>
+
+        <ul>
+            <li><strong>Stateless Protocol & Horizontal Scale:</strong> Recent spec releases transitioned MCP toward stateless request handling by removing mandatory initial session handshakes (`initialize`), allowing MCP servers to scale horizontally behind standard round-robin load balancers without complex session pinning.</li>
+            <li><strong>OAuth 2.1 Security & Conformance:</strong> Integrated enterprise authorization models (OAuth 2.1 / OIDC) and strict JSON Schema validation to guard against prompt injection and tool-poisoning vectors.</li>
+            <li><strong>MCP Apps & Extension Framework:</strong> Support for server-rendered UI widgets ("MCP Apps") embedded inside chat interfaces, alongside an extensions framework for asynchronous long-running background tasks.</li>
+        </ul>
+
         <h3>Annotated MCP Tool Declaration & Execution</h3>
-        <p>The code below demonstrates how an MCP Server defines a tool schema, allowing an LLM to dynamically inspect the tool's signature and invoke it safely:</p>
+        <p>The code below demonstrates how an MCP Server defines a tool schema using the official SDK, allowing an LLM to dynamically inspect the tool's signature and invoke it safely:</p>
 
         <div class="code-container">
             <div class="code-header">TypeScript / MCP Server Tool Definition</div>
             <pre><code><span class="code-keyword">import</span> { Server } <span class="code-keyword">from</span> <span class="code-string">"@modelcontextprotocol/sdk/server/index.js"</span>;
 <span class="code-keyword">import</span> { ListToolsRequestSchema, CallToolRequestSchema } <span class="code-keyword">from</span> <span class="code-string">"@modelcontextprotocol/sdk/types.js"</span>;
 
-<span class="code-comment">// Instantiate standard MCP Server</span>
-<span class="code-keyword">const</span> server = <span class="code-keyword">new</span> <span class="code-function">Server</span>({ name: <span class="code-string">"database-mcp-server"</span>, version: <span class="code-string">"1.0.0"</span> });
+<span class="code-comment">// Instantiate standard MCP Server with tool capabilities</span>
+<span class="code-keyword">const</span> server = <span class="code-keyword">new</span> <span class="code-function">Server</span>(
+  { name: <span class="code-string">"database-mcp-server"</span>, version: <span class="code-string">"2.0.0"</span> },
+  { capabilities: { tools: {} } }
+);
 
-<span class="code-comment">// 1. Expose Tool Schemas to the AI Agent</span>
+<span class="code-comment">// 1. Expose Tool Schemas to the AI Agent via JSON-RPC</span>
 server.<span class="code-function">setRequestHandler</span>(ListToolsRequestSchema, <span class="code-keyword">async</span> () => ({
   tools: [
     {
@@ -534,7 +546,7 @@ server.<span class="code-function">setRequestHandler</span>(ListToolsRequestSche
   ]
 }));
 
-<span class="code-comment">// 2. Handle Tool Invocation from the LLM</span>
+<span class="code-comment">// 2. Handle Dynamic Tool Invocation from the LLM</span>
 server.<span class="code-function">setRequestHandler</span>(CallToolRequestSchema, <span class="code-keyword">async</span> (request) => {
   <span class="code-keyword">if</span> (request.params.name === <span class="code-string">"query_database"</span>) {
     <span class="code-keyword">const</span> queryResult = <span class="code-keyword">await</span> db.<span class="code-function">query</span>(request.params.arguments.sql);
