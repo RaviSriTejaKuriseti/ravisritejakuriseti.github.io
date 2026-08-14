@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demystifying Modern LLM Alignment: PPO, DPO, GRPO, DPDO, and KTO | Kuriseti Ravi Sri Teja</title>
+    <meta name="description" content="A comprehensive mathematical and architectural deep dive into modern LLM Reinforcement Learning and alignment algorithms: PPO, DPO, GRPO, DPDO, and KTO.">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/img/logo.jpeg" type="image/x-icon">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Animate on Scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- MathJax for rendering LaTeX formulas -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        .post-header {
+            padding: 150px 0 50px;
+            text-align: center;
+        }
+
+        .post-meta {
+            color: var(--text-dim);
+            margin-bottom: 1rem;
+            display: block;
+            font-size: 0.95rem;
+        }
+
+        .post-content {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 50px 2.5rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            margin-bottom: 100px;
+        }
+
+        .post-content h2 {
+            margin: 2.8rem 0 1.2rem;
+            color: var(--primary);
+            font-size: 1.85rem;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        .post-content h3 {
+            margin: 2rem 0 1rem;
+            color: var(--secondary);
+            font-size: 1.4rem;
+        }
+
+        .post-content h4 {
+            margin: 1.4rem 0 0.6rem;
+            color: var(--text-main);
+            font-size: 1.15rem;
+        }
+
+        .post-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.08rem;
+            line-height: 1.85;
+            color: var(--text-main);
+        }
+
+        .post-content ul, .post-content ol {
+            margin-bottom: 1.8rem;
+            padding-left: 1.8rem;
+            color: var(--text-main);
+            line-height: 1.8;
+        }
+
+        .post-content li {
+            margin-bottom: 0.6rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+            transform: translateX(-4px);
+        }
+
+        .post-content a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .post-content a:hover {
+            text-decoration: underline;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            font-size: 0.95rem;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 1rem 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .comparison-table th {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .quote-box {
+            border-left: 4px solid var(--primary);
+            padding: 1.4rem 1.8rem;
+            background: rgba(168, 85, 247, 0.06);
+            margin: 2.2rem 0;
+            border-radius: 0 14px 14px 0;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .highlight-box {
+            border-left: 4px solid var(--secondary);
+            padding: 1.4rem 1.8rem;
+            background: rgba(6, 182, 212, 0.06);
+            margin: 2.2rem 0;
+            border-radius: 0 14px 14px 0;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .tech-stack {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 2rem;
+        }
+
+        .tech-tag {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid var(--glass-border);
+            color: var(--text-dim);
+        }
+
+        .math-block {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-container {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 0.92rem;
+            line-height: 1.65;
+            overflow-x: auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .code-container pre {
+            margin: 0;
+            white-space: pre;
+        }
+
+        .code-comment { color: #64748b; font-style: italic; }
+        .code-keyword { color: #c084fc; font-weight: 600; }
+        .code-function { color: #38bdf8; }
+        .code-string { color: #4ade80; }
+        .code-number { color: #fb923c; }
+        .code-builtin { color: #f472b6; }
+
+        .toc-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0 3rem;
+        }
+
+        .toc-box h3 {
+            margin: 0 0 1rem;
+            color: var(--secondary);
+            font-size: 1.2rem;
+        }
+
+        .toc-box ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+
+        .toc-box li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc-box a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .toc-box a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .callout-badge {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.2);
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .paper-link-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(6, 182, 212, 0.12);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            color: var(--secondary);
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-decoration: none;
+            margin: 0.4rem 0 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .paper-link-badge:hover {
+            background: rgba(6, 182, 212, 0.25);
+            border-color: var(--secondary);
+            transform: translateY(-1px);
+        }
+
+        .reference-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin: 2rem 0;
+        }
+
+        .reference-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.4rem 1.6rem;
+            transition: 0.3s ease;
+        }
+
+        .reference-card:hover {
+            border-color: rgba(168, 85, 247, 0.4);
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-2px);
+        }
+
+        .reference-card h4 {
+            margin: 0 0 0.4rem;
+            font-size: 1.1rem;
+            color: var(--text-main);
+        }
+
+        .reference-card .ref-authors {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+        }
+
+        .reference-card .ref-venue {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: rgba(168, 85, 247, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-glow">
+        <div class="glow-orb"></div>
+        <div class="glow-orb-2"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">RAVI SRI TEJA</div>
+            <ul>
+                <li><a href="../index.html#home">Home</a></li>
+                <li><a href="../index.html#about">About</a></li>
+                <li><a href="../index.html#education">Education</a></li>
+                <li><a href="../index.html#experience">Experience</a></li>
+                <li><a href="../index.html#skills">Skills</a></li>
+                <li><a href="../index.html#publications">Publications</a></li>
+                <li><a href="../blog.html" style="color: var(--text-main);">Blog</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="post-header container">
+        <div data-aos="fade-down">
+            <span class="post-meta">Reinforcement Learning & LLM Post-Training • August 14, 2026</span>
+            <h1 style="font-size: 2.6rem; max-width: 900px; margin: 0 auto; line-height: 1.25;">
+                Demystifying Modern LLM Alignment: <span style="background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">PPO, DPO, GRPO, DPDO, and KTO</span>
+            </h1>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <article class="post-content" data-aos="fade-up">
+        <a href="../blog.html" class="back-link">← Back to all posts</a>
+
+        <div class="quote-box">
+            "Aligning large language models with human preferences has evolved from complex 4-model actor-critic loops (PPO) into closed-form implicit losses (DPO, DPDO, KTO) and scalable critic-free group-relative reasoning engines (GRPO)."
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="toc-box">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#introduction">1. The Post-Training Evolution: Teaching Base Models to Reason & Comply</a></li>
+                <li><a href="#ppo">2. PPO (Proximal Policy Optimization): The Classical 4-Model Actor-Critic Baseline</a></li>
+                <li><a href="#dpo">3. DPO (Direct Preference Optimization): The Closed-Form Breakthrough</a></li>
+                <li><a href="#grpo">4. GRPO (Group Relative Policy Optimization): The Reasoning Engine Behind DeepSeek-R1</a></li>
+                <li><a href="#dpdo">5. DPDO (Direct Policy Distribution Optimization): Stabilizing Margin Dynamics</a></li>
+                <li><a href="#kto">6. KTO (Kahneman-Tversky Optimization): Aligning with Binary Real-World Signals</a></li>
+                <li><a href="#comparison">7. Architectural & Mathematical Comparison Matrix</a></li>
+                <li><a href="#implementation">8. Unified PyTorch Blueprint & Hugging Face TRL Usage</a></li>
+                <li><a href="#decision-guide">9. Strategic Decision Framework: Which Algorithm When?</a></li>
+                <li><a href="#references">10. Primary Literature & Foundational Papers</a></li>
+                <li><a href="#conclusion">11. Conclusion & The Post-Training Frontier</a></li>
+            </ul>
+        </div>
+
+        <h2 id="introduction">1. The Post-Training Evolution: Teaching Base Models to Reason & Comply</h2>
+        <p>
+            Pre-training equips Large Language Models (LLMs) with world knowledge, language fluency, and pattern-matching abilities. However, a raw base model is fundamentally a next-token predictor, not an assistant. To transform base models into helpful, safe, instruction-following agents and sophisticated reasoners, we rely on <strong>Post-Training</strong>.
+        </p>
+        <p>
+            The field of Reinforcement Learning for LLMs has experienced dramatic evolutionary phases:
+        </p>
+        <div class="highlight-box">
+            <ul>
+                <li><strong>Phase 1: Actor-Critic RLHF (PPO):</strong> Training separate Policy, Critic, Reference, and Reward models to optimize token trajectories via Generalized Advantage Estimation.</li>
+                <li><strong>Phase 2: Closed-Form Direct Optimization (DPO, DPDO, KTO):</strong> Bypassing the reward model and critic by analytically expressing ground-truth rewards directly through policy probability ratios.</li>
+                <li><strong>Phase 3: Critic-Free Group-Relative Reasoning (GRPO):</strong> Eliminating the value network to scale test-time compute, reasoning chains, and self-exploration with verifiable oracle rewards (pioneered in DeepSeek-R1).</li>
+            </ul>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+        <h2 id="ppo">2. PPO (Proximal Policy Optimization): The Classical 4-Model Actor-Critic Baseline</h2>
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <span class="callout-badge" style="background: rgba(251, 146, 60, 0.2); color: #fb923c;">Foundational Actor-Critic</span>
+            <a href="https://arxiv.org/abs/1707.06347" target="_blank" class="paper-link-badge">📄 Paper: Schulman et al. (OpenAI 2017) →</a>
+            <a href="https://arxiv.org/abs/2203.02155" target="_blank" class="paper-link-badge">📄 Paper: InstructGPT / Ouyang et al. (NeurIPS 2022) →</a>
+        </div>
+        <p>
+            First introduced by Schulman et al. (OpenAI, 2017) and adapted for language models in InstructGPT (Ouyang et al., 2022), <strong>Proximal Policy Optimization (PPO)</strong> served as the foundation of modern RLHF.
+        </p>
+
+        <h3>The 4-Model Architecture</h3>
+        <p>
+            Standard PPO in LLM alignment requires orchestrating four large neural networks simultaneously across GPUs:
+        </p>
+        <ol>
+            <li><strong>Actor Model ($\pi_\theta$):</strong> The policy network generating tokens and receiving policy gradient updates.</li>
+            <li><strong>Critic / Value Model ($V_\phi$):</strong> An auto-regressive value network estimating expected cumulative token rewards $V_\phi(s_t)$.</li>
+            <li><strong>Reference Model ($\pi_{\text{ref}}$):</strong> A frozen copy of the SFT checkpoint regularizing policy shift via a per-token KL divergence penalty.</li>
+            <li><strong>Reward Model ($r_\psi$):</strong> A separate scalar model trained on pairwise human comparisons to score completed sequences.</li>
+        </ol>
+
+        <h3>Per-Token Reward Formulation & KL Penalty</h3>
+        <p>
+            For a prompt $x$ and generated response $y = (y_1, y_2, \dots, y_T)$, the reward model assigns a scalar score $r_\psi(x, y)$ at the final EOS token. Each intermediate token also receives a per-token KL penalty to prevent policy drift:
+        </p>
+        <div class="math-block">
+            $$R(s_t, y_t) = \begin{cases} -\beta \left( \log \pi_\theta(y_t \mid x, y_{\lt t}) - \log \pi_{\text{ref}}(y_t \mid x, y_{\lt t}) \right) & \text{if } t \lt T \\ r_\psi(x, y) - \beta \left( \log \pi_\theta(y_T \mid x, y_{\lt T}) - \log \pi_{\text{ref}}(y_T \mid x, y_{\lt T}) \right) & \text{if } t = T \end{cases}$$
+        </div>
+
+        <h3>Generalized Advantage Estimation (GAE)</h3>
+        <p>
+            To compute policy gradient updates with low variance, PPO uses Generalized Advantage Estimation ($\text{GAE}(\gamma, \lambda)$) on the temporal difference errors $\delta_t^V$:
+        </p>
+        <div class="math-block">
+            $$\delta_t^V = R(s_t, y_t) + \gamma V_\phi(s_{t+1}) - V_\phi(s_t)$$
+        </div>
+        <div class="math-block">
+            $$\hat{A}_t = \sum_{l=0}^{T - t - 1} (\gamma \lambda)^l \delta_{t+l}^V$$
+        </div>
+
+        <h3>The Clipped Surrogate Policy Objective</h3>
+        <p>
+            To prevent destructively large policy steps, PPO defines the probability ratio $r_t(\theta) = \frac{\pi_\theta(y_t \mid x, y_{\lt t})}{\pi_{\theta_{\text{old}}}(y_t \mid x, y_{\lt t})}$ and optimizes the clipped surrogate objective:
+        </p>
+        <div class="math-block">
+            $$\mathcal{L}_{\text{PPO-Actor}}(\theta) = -\hat{\mathbb{E}}_t \left[ \min\left( r_t(\theta) \hat{A}_t, \; \text{clip}\left(r_t(\theta), 1-\epsilon, 1+\epsilon\right) \hat{A}_t \right) \right]$$
+        </div>
+        <p>
+            Simultaneously, the Critic model $V_\phi$ is updated by minimizing the squared error against empirical returns $V_t^{\text{targ}} = \hat{A}_t + V_{\phi_{\text{old}}}(s_t)$:
+        </p>
+        <div class="math-block">
+            $$\mathcal{L}_{\text{Critic}}(\phi) = \frac{1}{2} \hat{\mathbb{E}}_t \left[ \left( V_\phi(s_t) - V_t^{\text{targ}} \right)^2 \right]$$
+        </div>
+
+        <h3>Why PPO Became a Bottleneck</h3>
+        <ul>
+            <li><strong>Severe GPU VRAM Overhead:</strong> Loading 4 separate 70B+ parameter models requires immense distributed cluster infrastructure.</li>
+            <li><strong>Value Estimation Instability:</strong> Training a token-level value function $V_\phi$ over discrete text is noisy and prone to divergence.</li>
+            <li><strong>Reward Model Exploitation:</strong> Optimizing against a static neural reward model $r_\psi$ easily leads to "reward hacking" (generating repetitive, verbose, or sycophantic text that exploits RM flaws).</li>
+        </ul>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+        <h2 id="dpo">3. DPO (Direct Preference Optimization): The Closed-Form Breakthrough</h2>
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <span class="callout-badge">Direct Optimization</span>
+            <a href="https://arxiv.org/abs/2305.18290" target="_blank" class="paper-link-badge">📄 Paper: Rafailov et al. (NeurIPS 2023) →</a>
+        </div>
+        <p>
+            Introduced by Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, and Chelsea Finn (Stanford University, 2023), <strong>Direct Preference Optimization (DPO)</strong> proved that one does not need to explicitly train a reward model $r(x,y)$ and then run reinforcement learning on top. Instead, there exists an exact analytical mapping between the optimal policy $\pi^*(y|x)$ and the underlying ground-truth reward function.
+        </p>
+
+        <h3>The Core Mathematical Insight</h3>
+        <p>
+            In standard RLHF, the optimization objective with a Kullback-Leibler (KL) divergence penalty against a reference policy $\pi_{\text{ref}}$ is:
+        </p>
+        <div class="math-block">
+            $$\max_{\pi_\theta} \mathbb{E}_{x \sim \mathcal{D}, y \sim \pi_\theta} \left[ r(x, y) \right] - \beta D_{\text{KL}}\left(\pi_\theta(y|x) \,\|\, \pi_{\text{ref}}(y|x)\right)$$
+        </div>
+        <p>
+            The analytical solution to this constrained optimization problem is given by:
+        </p>
+        <div class="math-block">
+            $$\pi^*(y|x) = \frac{1}{Z(x)} \pi_{\text{ref}}(y|x) \exp\left( \frac{1}{\beta} r(x, y) \right)$$
+        </div>
+        <p>
+            where $Z(x) = \sum_y \pi_{\text{ref}}(y|x) \exp\left(\frac{1}{\beta} r(x,y)\right)$ is the partition function. Rearranging this relationship allows us to express the ground-truth reward <em>implicitly</em> in terms of the optimal policy:
+        </p>
+        <div class="math-block">
+            $$r(x, y) = \beta \log \frac{\pi^*(y|x)}{\pi_{\text{ref}}(y|x)} + \beta \log Z(x)$$
+        </div>
+
+        <h3>Substituting into the Bradley-Terry Preference Model</h3>
+        <p>
+            Under the Bradley-Terry preference model, the probability that a human prefers response $y_w$ (winner/chosen) over $y_l$ (loser/rejected) for prompt $x$ is:
+        </p>
+        <div class="math-block">
+            $$P(y_w \succ y_l \mid x) = \sigma\left( r(x, y_w) - r(x, y_l) \right) = \frac{1}{1 + \exp\left( -(r(x, y_w) - r(x, y_l)) \right)}$$
+        </div>
+        <p>
+            When we substitute the implicit reward definition into this equation, the unknown partition function $\beta \log Z(x)$ cancels out entirely! This yields the celebrated <strong>DPO Loss Function</strong>:
+        </p>
+        <div class="math-block">
+            $$\mathcal{L}_{\text{DPO}}(\theta; \pi_{\text{ref}}) = -\mathbb{E}_{(x, y_w, y_l) \sim \mathcal{D}} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \beta \log \frac{\pi_\theta(y_l|x)}{\pi_{\text{ref}}(y_l|x)} \right) \right]$$
+        </div>
+
+        <h3>Gradient Mechanics & Dynamics</h3>
+        <p>
+            Computing the gradient with respect to parameter vector $\theta$ reveals how DPO guides learning:
+        </p>
+        <div class="math-block">
+            $$\nabla_\theta \mathcal{L}_{\text{DPO}}(\theta) = -\beta \, \mathbb{E} \left[ \underbrace{\sigma\left(\hat{r}_\theta(x, y_l) - \hat{r}_\theta(x, y_w)\right)}_{\text{Implicit Error Weight } w(x, y_w, y_l)} \left( \nabla_\theta \log \pi_\theta(y_w|x) - \nabla_\theta \log \pi_\theta(y_l|x) \right) \right]$$
+        </div>
+        <p>
+            When the model already correctly places high implicit reward on $y_w$ relative to $y_l$, the weight $\sigma(\hat{r}_l - \hat{r}_w) \to 0$, so the gradient vanishes. Conversely, when the model incorrectly favors $y_l$, the weight approaches $1$, applying maximal force to push probability mass toward $y_w$ and away from $y_l$.
+        </p>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+        <h2 id="grpo">4. GRPO (Group Relative Policy Optimization): The Reasoning Engine Behind DeepSeek-R1</h2>
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <span class="callout-badge" style="background: rgba(6, 182, 212, 0.2); color: var(--secondary);">Reasoning & Test-Time Compute</span>
+            <a href="https://arxiv.org/abs/2402.03300" target="_blank" class="paper-link-badge">📄 Paper: Shao et al. (DeepSeekMath 2024) →</a>
+            <a href="https://arxiv.org/abs/2501.12948" target="_blank" class="paper-link-badge">📄 Paper: DeepSeek-R1 (2025) →</a>
+        </div>
+        <p>
+            Introduced by DeepSeek in <em>DeepSeekMath</em> (Shao et al., 2024) and scaled to unprecedented heights in <strong>DeepSeek-R1</strong>, <strong>Group Relative Policy Optimization (GRPO)</strong> is an online reinforcement learning algorithm specifically architected for complex reasoning, mathematical theorem proving, and code generation.
+        </p>
+
+        <h3>The Architectural Bottleneck in Traditional PPO</h3>
+        <p>
+            In standard PPO, training a 671B MoE or 70B dense model requires maintaining a Critic (Value) network of comparable scale. The value model consumes as much GPU memory as the policy itself and is notoriously noisy to train for discrete token-level generation.
+        </p>
+        <p>
+            <strong>GRPO eliminates the Critic completely.</strong> Instead of learning a parameterized value baseline $V_\phi(s)$, GRPO estimates the baseline dynamically by sampling a <em>group</em> of responses for each prompt and measuring each candidate's relative performance against the group average.
+        </p>
+
+        <h3>Group Sampling & Group-Relative Advantage</h3>
+        <p>
+            For a given prompt $q$, GRPO samples a group of $G$ outputs $\{o_1, o_2, \dots, o_G\}$ from the previous policy $\pi_{\theta_{\text{old}}}$. Each response $o_i$ is evaluated by a reward function (e.g., rule-based test case pass/fail, symbolic math verifiers, or format verifiers), yielding scores $\{r_1, r_2, \dots, r_G\}$.
+        </p>
+        <p>
+            The advantage $A_i$ for candidate $o_i$ is then normalized directly across the group:
+        </p>
+        <div class="math-block">
+            $$A_i = \frac{r_i - \text{mean}\left(\{r_1, \dots, r_G\}\right)}{\text{std}\left(\{r_1, \dots, r_G\}\right) + \epsilon}$$
+        </div>
+
+        <h3>The GRPO Objective Function</h3>
+        <p>
+            Using the group advantages, the policy parameters $\theta$ are optimized using a clipped surrogate objective with an explicit per-token KL regularization penalty against a frozen reference model $\pi_{\text{ref}}$:
+        </p>
+        <div class="math-block">
+            $$\mathcal{J}_{\text{GRPO}}(\theta) = \mathbb{E}_{q \sim P(Q), \{o_i\}_{i=1}^G \sim \pi_{\theta_{\text{old}}}(O|q)} \left[ \frac{1}{G} \sum_{i=1}^G \frac{1}{|o_i|} \sum_{t=1}^{|o_i|} \left( \min\left( \frac{\pi_\theta(o_{i,t}|q, o_{i,\lt t})}{\pi_{\theta_{\text{old}}}(o_{i,t}|q, o_{i,\lt t})} A_i, \; \text{clip}\left( \frac{\pi_\theta}{\pi_{\theta_{\text{old}}}}, 1-\epsilon, 1+\epsilon \right) A_i \right) - \beta D_{\text{KL}}\left(\pi_\theta \,\|\, \pi_{\text{ref}}\right)_t \right) \right]$$
+        </div>
+        <p>
+            To compute the per-token KL penalty without introducing bias, GRPO uses the unbiased estimator:
+        </p>
+        <div class="math-block">
+            $$D_{\text{KL}}\left(\pi_\theta \,\|\, \pi_{\text{ref}}\right)_t = \frac{\pi_{\text{ref}}(o_{i,t}|q, o_{i,\lt t})}{\pi_\theta(o_{i,t}|q, o_{i,\lt t})} - \log \frac{\pi_{\text{ref}}(o_{i,t}|q, o_{i,\lt t})}{\pi_\theta(o_{i,t}|q, o_{i,\lt t})} - 1$$
+        </div>
+
+        <h3>Why GRPO Unlocked DeepSeek-R1-Zero's "Aha Moment"</h3>
+        <ul>
+            <li><strong>Zero Value Network Overhead:</strong> Saves massive VRAM, allowing the entire cluster budget to be dedicated to larger batch sizes and ultra-long chain-of-thought rollouts (up to 32k+ tokens).</li>
+            <li><strong>Self-Exploration with Verifiable Rewards:</strong> By relying on automated oracle verifiers (compiler output, Python execution, Lean 4 proofs) rather than neural reward models, GRPO eliminates reward gaming entirely.</li>
+            <li><strong>Emergent Reflection:</strong> Because advantages reward solutions that outperform their sibling attempts, the model spontaneously learns self-verification, backtracking, and exploration strategies.</li>
+        </ul>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+        <h2 id="dpdo">5. DPDO (Direct Policy Distribution Optimization): Stabilizing Margin Dynamics</h2>
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <span class="callout-badge">Distributional Alignment</span>
+            <a href="https://arxiv.org/abs/2402.08643" target="_blank" class="paper-link-badge">📄 Paper: Distribution & Decoupled Preference Optimization →</a>
+        </div>
+        <p>
+            While standard DPO works exceptionally well on small-scale preference sets, subsequent research revealed subtle failure modes in standard Bradley-Terry optimization:
+        </p>
+        <ul>
+            <li><strong>Implicit Margin Collapse:</strong> DPO only optimizes the relative difference $(\hat{r}_w - \hat{r}_l)$. If both likelihoods $\pi_\theta(y_w)$ and $\pi_\theta(y_l)$ decrease while their difference widens, the DPO loss is still minimized, causing policy entropy collapse.</li>
+            <li><strong>Token-Level Preference Drift:</strong> In multi-turn or lengthy responses, only a few tokens in $y_l$ might be incorrect. DPO penalizes all tokens in $y_l$ uniformly, inadvertently suppressing valid vocabulary.</li>
+            <li><strong>Multimodal Preference Mismatches:</strong> When human preference distributions are non-deterministic or multi-modal, pointwise log-ratio matching fails to capture the true probability distribution.</li>
+        </ul>
+
+        <h3>Distribution-Aware Alignment Formulation</h3>
+        <p>
+            <strong>DPDO (Direct Policy Distribution Optimization / Decoupled Preference Optimization)</strong> addresses these limitations by decoupling the positive reinforcement on $y_w$ from the negative penalty on $y_l$, enforcing boundary-aware probability margins:
+        </p>
+        <div class="math-block">
+            $$\mathcal{L}_{\text{DPDO}}(\theta) = -\mathbb{E}_{(x, y_w, y_l)} \left[ \log \sigma\left(\beta \log \frac{\pi_\theta(y_w|x)}{\pi_{\text{ref}}(y_w|x)} - \gamma\right) + \lambda \log \sigma\left(\gamma - \beta \log \frac{\pi_\theta(y_l|x)}{\pi_{\text{ref}}(y_l|x)}\right) \right]$$
+        </div>
+        <p>
+            Here, $\gamma$ represents a target margin threshold, and $\lambda$ is a decoupling coefficient. This structure guarantees that:
+        </p>
+        <ol>
+            <li>$y_w$ receives direct supervised reward centering, ensuring its absolute log-likelihood under $\pi_\theta$ does not deteriorate.</li>
+            <li>$y_l$ is only pushed down until it drops below the threshold $\gamma$, preventing excessive negative gradient updates on common conversational tokens.</li>
+        </ol>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+        <h2 id="kto">6. KTO (Kahneman-Tversky Optimization): Aligning with Binary Real-World Signals</h2>
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <span class="callout-badge" style="background: rgba(244, 114, 182, 0.2); color: #f472b6;">Behavioral Economics</span>
+            <a href="https://arxiv.org/abs/2402.01306" target="_blank" class="paper-link-badge">📄 Paper: Ethayarajh et al. (ICML 2024) →</a>
+        </div>
+        <p>
+            Developed by Kawin Ethayarajh, Winnie Xu, Niklas Muennighoff, Dan Jurafsky, and Douwe Kiela (Contextual AI & Stanford University, 2024), <strong>Kahneman-Tversky Optimization (KTO)</strong> takes a radically different perspective inspired by behavioral economics and Daniel Kahneman & Amos Tversky's Nobel Prize-winning <strong>Prospect Theory</strong>.
+        </p>
+
+        <h3>The Real-World Data Problem</h3>
+        <p>
+            Pairwise preference datasets $(x, y_w, y_l)$ are artificial and expensive. In real-world product deployment (chat interfaces, code assistants, recommendation engines), feedback is almost always <strong>unpaired and binary</strong>:
+        </p>
+        <ul>
+            <li>A user gave a "thumbs up" or accepted a code completion ($y \in \mathcal{Y}_{\text{desirable}}$).</li>
+            <li>A user gave a "thumbs down", regenerated, or edited a completion ($y \in \mathcal{Y}_{\text{undesirable}}$).</li>
+        </ul>
+        <p>
+            Pairing these signals arbitrarily creates synthetic noise. KTO is designed to optimize directly on unpaired $(x, y, \text{label})$ tuples.
+        </p>
+
+        <h3>Prospect Theory & Loss Aversion</h3>
+        <p>
+            Prospect Theory posits that humans do not make decisions by maximizing expected utility. Instead, they maximize <em>subjective value</em> defined relative to a reference point (the status quo), where <strong>losses loom larger than gains</strong>:
+        </p>
+        <div class="math-block">
+            $$v(z) = \begin{cases} z^\alpha & \text{if } z \ge 0 \quad (\text{gains}) \\ -\lambda_D (-z)^\alpha & \text{if } z \lt 0 \quad (\text{losses, with } \lambda_D \gt 1) \end{cases}$$
+        </div>
+
+        <h3>The KTO Loss Function</h3>
+        <p>
+            KTO defines the implicit reward $r_\theta(x,y) = \beta \log \frac{\pi_\theta(y|x)}{\pi_{\text{ref}}(y|x)}$ and establishes a reference status quo $z_{\text{ref}}$ representing the average KL divergence between the policy and reference distribution across prompts:
+        </p>
+        <div class="math-block">
+            $$z_{\text{ref}} = \mathbb{E}_{x' \sim \mathcal{D}} \left[ \beta \, D_{\text{KL}}\left(\pi_\theta(y'|x') \,\|\, \pi_{\text{ref}}(y'|x')\right) \right]$$
+        </div>
+        <p>
+            The KTO loss combines asymmetrical reward scaling for desirable and undesirable responses:
+        </p>
+        <div class="math-block">
+            $$\mathcal{L}_{\text{KTO}}(\theta, \pi_{\text{ref}}) = \mathbb{E}_{(x,y) \sim \mathcal{D}} \left[ w(y) \left( 1 - \sigma\left( \lambda_y \left( \beta \log \frac{\pi_\theta(y|x)}{\pi_{\text{ref}}(y|x)} - z_{\text{ref}} \right) \right) \right) \right]$$
+        </div>
+        <p>
+            where:
+        </p>
+        <ul>
+            <li>For desirable outputs ($y \in \mathcal{Y}_{\text{desirable}}$): $\lambda_y = +1$ and weight $w(y) = \lambda_D$.</li>
+            <li>For undesirable outputs ($y \in \mathcal{Y}_{\text{undesirable}}$): $\lambda_y = -1$ and weight $w(y) = \lambda_U$. Setting $\lambda_U \gt \lambda_D$ reflects human loss aversion.</li>
+        </ul>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+        <h2 id="comparison">7. Architectural & Mathematical Comparison Matrix</h2>
+        <p>
+            Here is a comprehensive breakdown of how PPO, DPO, GRPO, DPDO, and KTO compare across theoretical assumptions, memory footprints, and practical use cases:
+        </p>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Data Format</th>
+                    <th>Reward / Verifier</th>
+                    <th>Critic Model</th>
+                    <th>Training Mode</th>
+                    <th>Key Advantage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>PPO</strong></td>
+                    <td>Prompts + Pairwise RM</td>
+                    <td>Learned Neural RM ($r_\psi$)</td>
+                    <td>Yes ($V_\phi$ required)</td>
+                    <td>Online (Rollouts)</td>
+                    <td>Full token-level MDP control; foundational gold-standard for conversational RLHF.</td>
+                </tr>
+                <tr>
+                    <td><strong>DPO</strong></td>
+                    <td>Paired $(x, y_w, y_l)$</td>
+                    <td>Implicit (Closed-Form)</td>
+                    <td>None</td>
+                    <td>Offline</td>
+                    <td>Extremely simple; eliminates reward model and policy rollout during training.</td>
+                </tr>
+                <tr>
+                    <td><strong>GRPO</strong></td>
+                    <td>Prompts only $q \sim P(Q)$</td>
+                    <td>Rule-based verifiers / ORM</td>
+                    <td>None (Group Mean)</td>
+                    <td>Online (Rollouts)</td>
+                    <td>Massive VRAM savings; state-of-the-art for multi-step reasoning, math, and code.</td>
+                </tr>
+                <tr>
+                    <td><strong>DPDO</strong></td>
+                    <td>Paired $(x, y_w, y_l)$</td>
+                    <td>Implicit (Decoupled)</td>
+                    <td>None</td>
+                    <td>Offline</td>
+                    <td>Prevents margin collapse and token degradation in long sequences.</td>
+                </tr>
+                <tr>
+                    <td><strong>KTO</strong></td>
+                    <td>Unpaired $(x, y, \pm 1)$</td>
+                    <td>Implicit (Prospect Reference)</td>
+                    <td>None</td>
+                    <td>Offline</td>
+                    <td>Optimizes directly on raw binary telemetry (thumbs up/down) without synthetic pairing.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+        <h2 id="implementation">8. Unified PyTorch Blueprint for Modern RL Alignment</h2>
+        <p>
+            Below is a modular PyTorch implementation capturing the loss calculations for PPO, DPO, GRPO, DPDO, and KTO:
+        </p>
+
+        <div class="code-container">
+<pre><code><span class="code-keyword">import</span> torch
+<span class="code-keyword">import</span> torch.nn <span class="code-keyword">as</span> nn
+<span class="code-keyword">import</span> torch.nn.functional <span class="code-keyword">as</span> F
+
+<span class="code-comment"># =====================================================================</span>
+<span class="code-comment"># 1. PROXIMAL POLICY OPTIMIZATION (PPO) LOSS</span>
+<span class="code-comment"># =====================================================================</span>
+<span class="code-keyword">def</span> <span class="code-function">compute_ppo_actor_critic_loss</span>(
+    logprobs: torch.Tensor,         <span class="code-comment"># [Batch, Seq_Len] current policy</span>
+    old_logprobs: torch.Tensor,     <span class="code-comment"># [Batch, Seq_Len] rollout policy</span>
+    values: torch.Tensor,           <span class="code-comment"># [Batch, Seq_Len] current critic</span>
+    old_values: torch.Tensor,       <span class="code-comment"># [Batch, Seq_Len] rollout critic</span>
+    rewards: torch.Tensor,          <span class="code-comment"># [Batch, Seq_Len] per-token rewards with KL</span>
+    mask: torch.Tensor,             <span class="code-comment"># [Batch, Seq_Len] attention mask</span>
+    gamma: <span class="code-builtin">float</span> = <span class="code-number">1.0</span>,
+    lam: <span class="code-builtin">float</span> = <span class="code-number">0.95</span>,
+    cliprange: <span class="code-builtin">float</span> = <span class="code-number">0.2</span>,
+    vf_coef: <span class="code-builtin">float</span> = <span class="code-number">0.5</span>
+):
+    <span class="code-comment"># 1. Compute Generalized Advantage Estimation (GAE)</span>
+    advantages = torch.zeros_like(rewards)
+    last_gae = <span class="code-number">0.0</span>
+    seq_len = rewards.shape[<span class="code-number">1</span>]
+    
+    <span class="code-keyword">for</span> t <span class="code-keyword">in</span> <span class="code-builtin">reversed</span>(<span class="code-builtin">range</span>(seq_len)):
+        next_value = values[:, t + <span class="code-number">1</span>] <span class="code-keyword">if</span> t + <span class="code-number">1</span> < seq_len <span class="code-keyword">else</span> <span class="code-number">0.0</span>
+        delta = rewards[:, t] + gamma * next_value - values[:, t]
+        advantages[:, t] = last_gae = delta + gamma * lam * last_gae
+        
+    returns = advantages + values
+    
+    <span class="code-comment"># 2. PPO Clipped Actor Loss</span>
+    ratio = torch.exp(logprobs - old_logprobs)
+    surr1 = ratio * advantages
+    surr2 = torch.clamp(ratio, <span class="code-number">1.0</span> - cliprange, <span class="code-number">1.0</span> + cliprange) * advantages
+    policy_loss = -torch.min(surr1, surr2)
+    
+    <span class="code-comment"># 3. Critic Value Loss</span>
+    vf_loss = <span class="code-number">0.5</span> * (values - returns) ** <span class="code-number">2</span>
+    
+    total_loss = (policy_loss + vf_coef * vf_loss) * mask
+    <span class="code-keyword">return</span> total_loss.sum() / mask.sum()
+
+<span class="code-comment"># =====================================================================</span>
+<span class="code-comment"># 2. DIRECT PREFERENCE OPTIMIZATION (DPO) LOSS</span>
+<span class="code-comment"># =====================================================================</span>
+<span class="code-keyword">def</span> <span class="code-function">compute_dpo_loss</span>(
+    policy_chosen_logps: torch.Tensor,
+    policy_rejected_logps: torch.Tensor,
+    reference_chosen_logps: torch.Tensor,
+    reference_rejected_logps: torch.Tensor,
+    beta: <span class="code-builtin">float</span> = <span class="code-number">0.1</span>,
+    label_smoothing: <span class="code-builtin">float</span> = <span class="code-number">0.0</span>
+) -&gt; torch.Tensor:
+    chosen_logratios = policy_chosen_logps - reference_chosen_logps
+    rejected_logratios = policy_rejected_logps - reference_rejected_logps
+    
+    logits = beta * (chosen_logratios - rejected_logratios)
+    
+    <span class="code-keyword">if</span> label_smoothing > <span class="code-number">0.0</span>:
+        losses = -F.logsigmoid(logits) * (<span class="code-number">1</span> - label_smoothing) - F.logsigmoid(-logits) * label_smoothing
+    <span class="code-keyword">else</span>:
+        losses = -F.logsigmoid(logits)
+        
+    <span class="code-keyword">return</span> losses.mean()
+
+<span class="code-comment"># =====================================================================</span>
+<span class="code-comment"># 3. GROUP RELATIVE POLICY OPTIMIZATION (GRPO) LOSS</span>
+<span class="code-comment"># =====================================================================</span>
+<span class="code-keyword">def</span> <span class="code-function">compute_grpo_loss</span>(
+    policy_logps: torch.Tensor,       <span class="code-comment"># [Group_Size, Seq_Len]</span>
+    old_policy_logps: torch.Tensor,   <span class="code-comment"># [Group_Size, Seq_Len]</span>
+    ref_logps: torch.Tensor,          <span class="code-comment"># [Group_Size, Seq_Len]</span>
+    rewards: torch.Tensor,            <span class="code-comment"># [Group_Size]</span>
+    mask: torch.Tensor,               <span class="code-comment"># [Group_Size, Seq_Len]</span>
+    beta: <span class="code-builtin">float</span> = <span class="code-number">0.04</span>,
+    epsilon_clip: <span class="code-builtin">float</span> = <span class="code-number">0.2</span>
+) -&gt; torch.Tensor:
+    <span class="code-comment"># 1. Group-relative advantage estimation</span>
+    group_mean = rewards.mean()
+    group_std = rewards.std() + <span class="code-number">1e-8</span>
+    advantages = (rewards - group_mean) / group_std
+    advantages = advantages.unsqueeze(<span class="code-number">-1</span>)
+    
+    <span class="code-comment"># 2. Probability ratio for PPO clipping</span>
+    ratio = torch.exp(policy_logps - old_policy_logps)
+    clipped_ratio = torch.clamp(ratio, <span class="code-number">1.0</span> - epsilon_clip, <span class="code-number">1.0</span> + epsilon_clip)
+    surrogate_loss = -torch.min(ratio * advantages, clipped_ratio * advantages)
+    
+    <span class="code-comment"># 3. Unbiased per-token KL divergence penalty</span>
+    kl_div = torch.exp(ref_logps - policy_logps) - (ref_logps - policy_logps) - <span class="code-number">1.0</span>
+    
+    total_token_loss = surrogate_loss + beta * kl_div
+    loss = (total_token_loss * mask).sum() / mask.sum()
+    <span class="code-keyword">return</span> loss
+
+<span class="code-comment"># =====================================================================</span>
+<span class="code-comment"># 4. DIRECT POLICY DISTRIBUTION OPTIMIZATION (DPDO) LOSS</span>
+<span class="code-comment"># =====================================================================</span>
+<span class="code-keyword">def</span> <span class="code-function">compute_dpdo_loss</span>(
+    policy_chosen_logps: torch.Tensor,
+    policy_rejected_logps: torch.Tensor,
+    reference_chosen_logps: torch.Tensor,
+    reference_rejected_logps: torch.Tensor,
+    beta: <span class="code-builtin">float</span> = <span class="code-number">0.1</span>,
+    gamma_margin: <span class="code-builtin">float</span> = <span class="code-number">0.5</span>,
+    lambda_weight: <span class="code-builtin">float</span> = <span class="code-number">1.0</span>
+) -&gt; torch.Tensor:
+    chosen_logratio = policy_chosen_logps - reference_chosen_logps
+    rejected_logratio = policy_rejected_logps - reference_rejected_logps
+    
+    chosen_loss = -F.logsigmoid(beta * chosen_logratio - gamma_margin)
+    rejected_loss = -F.logsigmoid(gamma_margin - beta * rejected_logratio)
+    
+    loss = chosen_loss + lambda_weight * rejected_loss
+    <span class="code-keyword">return</span> loss.mean()
+
+<span class="code-comment"># =====================================================================</span>
+<span class="code-comment"># 5. KAHNEMAN-TVERSKY OPTIMIZATION (KTO) LOSS</span>
+<span class="code-comment"># =====================================================================</span>
+<span class="code-keyword">def</span> <span class="code-function">compute_kto_loss</span>(
+    policy_logps: torch.Tensor,
+    reference_logps: torch.Tensor,
+    is_desirable: torch.Tensor,  <span class="code-comment"># Boolean tensor: True for thumbs-up, False for thumbs-down</span>
+    z_ref: <span class="code-builtin">float</span>,                <span class="code-comment"># Running expectation of KL divergence</span>
+    beta: <span class="code-builtin">float</span> = <span class="code-number">0.1</span>,
+    lambda_desirable: <span class="code-builtin">float</span> = <span class="code-number">1.0</span>,
+    lambda_undesirable: <span class="code-builtin">float</span> = <span class="code-number">1.33</span>  <span class="code-comment"># Loss aversion factor</span>
+) -&gt; torch.Tensor:
+    log_ratios = policy_logps - reference_logps
+    implicit_rewards = beta * log_ratios
+    
+    losses = torch.zeros_like(policy_logps)
+    
+    losses[is_desirable] = lambda_desirable * (
+        <span class="code-number">1.0</span> - torch.sigmoid(implicit_rewards[is_desirable] - z_ref)
+    )
+    losses[~is_desirable] = lambda_undesirable * (
+        <span class="code-number">1.0</span> - torch.sigmoid(z_ref - implicit_rewards[~is_desirable])
+    )
+    
+    <span class="code-keyword">return</span> losses.mean()</code></pre>
+        </div>
+
+        <h3>8.2 High-Level Training with Hugging Face TRL</h3>
+        <p>
+            In practice, the open-source community relies on Hugging Face's <a href="https://github.com/huggingface/trl" target="_blank"><strong>TRL (Transformer Reinforcement Learning)</strong></a> library, which abstracts distributed rollouts, reference model synchronization, and GPU memory offloading into clean, standard Trainer classes:
+        </p>
+
+        <!-- TRL DPO Example -->
+        <h4>1. Direct Preference Optimization with <code>DPOTrainer</code></h4>
+        <p>
+            Requires a dataset formatted with <code>prompt</code>, <code>chosen</code>, and <code>rejected</code> columns.
+        </p>
+        <div class="code-container">
+<pre><code><span class="code-keyword">from</span> transformers <span class="code-keyword">import</span> AutoModelForCausalLM, AutoTokenizer
+<span class="code-keyword">from</span> trl <span class="code-keyword">import</span> DPOTrainer, DPOConfig
+<span class="code-keyword">from</span> datasets <span class="code-keyword">import</span> load_dataset
+
+<span class="code-comment"># 1. Load model and tokenizer</span>
+model_id = <span class="code-string">"meta-llama/Llama-3.1-8B-Instruct"</span>
+model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=<span class="code-string">"bfloat16"</span>, device_map=<span class="code-string">"auto"</span>)
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+
+<span class="code-comment"># 2. Configure DPO Hyperparameters</span>
+dpo_config = DPOConfig(
+    output_dir=<span class="code-string">"./dpo_aligned_model"</span>,
+    beta=<span class="code-number">0.1</span>,                      <span class="code-comment"># KL temperature regularizer</span>
+    learning_rate=<span class="code-number">5e-7</span>,
+    per_device_train_batch_size=<span class="code-number">2</span>,
+    gradient_accumulation_steps=<span class="code-number">8</span>,
+    max_length=<span class="code-number">2048</span>,
+    max_prompt_length=<span class="code-number">1024</span>,
+    logging_steps=<span class="code-number">10</span>,
+    save_strategy=<span class="code-string">"epoch"</span>
+)
+
+<span class="code-comment"># 3. Train on Paired Preference Data</span>
+dataset = load_dataset(<span class="code-string">"HuggingFaceH4/ultrafeedback_binarized"</span>, split=<span class="code-string">"train_prefs"</span>)
+
+trainer = DPOTrainer(
+    model=model,
+    args=dpo_config,
+    train_dataset=dataset,
+    processing_class=tokenizer,
+)
+trainer.train()</code></pre>
+        </div>
+
+        <!-- TRL GRPO Example -->
+        <h4>2. DeepSeek Reasoning Alignment with <code>GRPOTrainer</code></h4>
+        <p>
+            Introduced natively in modern TRL, <code>GRPOTrainer</code> enables DeepSeek-R1-style self-exploration using group rollouts and Python/symbolic verification functions.
+        </p>
+        <div class="code-container">
+<pre><code><span class="code-keyword">import</span> re
+<span class="code-keyword">from</span> trl <span class="code-keyword">import</span> GRPOTrainer, GRPOConfig
+<span class="code-keyword">from</span> datasets <span class="code-keyword">import</span> load_dataset
+
+<span class="code-comment"># 1. Define Rule-Based Verifier Reward Functions</span>
+<span class="code-keyword">def</span> <span class="code-function">math_accuracy_reward</span>(prompts, completions, answer, **kwargs):
+    <span class="code-string">"""Checks if the model extracted the exact correct numerical answer."""</span>
+    rewards = []
+    <span class="code-keyword">for</span> completion, true_ans <span class="code-keyword">in</span> <span class="code-builtin">zip</span>(completions, answer):
+        <span class="code-comment"># Look for boxed answer e.g. \boxed{42}</span>
+        match = re.search(<span class="code-string">r"\\boxed\{([^}]+)\}"</span>, completion)
+        extracted = match.group(<span class="code-number">1</span>).strip() <span class="code-keyword">if</span> match <span class="code-keyword">else</span> <span class="code-keyword">None</span>
+        rewards.append(<span class="code-number">1.0</span> <span class="code-keyword">if</span> extracted == true_ans.strip() <span class="code-keyword">else</span> <span class="code-number">0.0</span>)
+    <span class="code-keyword">return</span> rewards
+
+<span class="code-keyword">def</span> <span class="code-function">thought_format_reward</span>(prompts, completions, **kwargs):
+    <span class="code-string">"""Rewards proper &lt;think&gt; ... &lt;/think&gt; reasoning structure."""</span>
+    pattern = <span class="code-string">r"^&lt;think&gt;.*?&lt;/think&gt;.*"</span>
+    <span class="code-keyword">return</span> [<span class="code-number">0.5</span> <span class="code-keyword">if</span> re.match(pattern, c, re.DOTALL) <span class="code-keyword">else</span> <span class="code-number">0.0</span> <span class="code-keyword">for</span> c <span class="code-keyword">in</span> completions]
+
+<span class="code-comment"># 2. Configure GRPO Hyperparameters</span>
+grpo_config = GRPOConfig(
+    output_dir=<span class="code-string">"./grpo_r1_reasoning"</span>,
+    learning_rate=<span class="code-number">1e-6</span>,
+    num_generations=<span class="code-number">8</span>,           <span class="code-comment"># Group size G (sample 8 answers per prompt)</span>
+    max_completion_length=<span class="code-number">4096</span>,   <span class="code-comment"># Generous budget for Chain-of-Thought</span>
+    beta=<span class="code-number">0.04</span>,                   <span class="code-comment"># Per-token KL penalty</span>
+    per_device_train_batch_size=<span class="code-number">1</span>,
+    gradient_accumulation_steps=<span class="code-number">16</span>,
+)
+
+<span class="code-comment"># 3. Train on Prompts with Verifiable Math Targets</span>
+dataset = load_dataset(<span class="code-string">"gsm8k"</span>, <span class="code-string">"main"</span>, split=<span class="code-string">"train"</span>)
+
+trainer = GRPOTrainer(
+    model=<span class="code-string">"Qwen/Qwen2.5-7B-Instruct"</span>,
+    reward_funcs=[math_accuracy_reward, thought_format_reward],
+    args=grpo_config,
+    train_dataset=dataset,
+)
+trainer.train()</code></pre>
+        </div>
+
+        <!-- TRL KTO Example -->
+        <h4>3. Binary Telemetry Alignment with <code>KTOTrainer</code></h4>
+        <p>
+            Accepts unpaired data with <code>prompt</code>, <code>completion</code>, and boolean <code>label</code> (True for desirable, False for undesirable).
+        </p>
+        <div class="code-container">
+<pre><code><span class="code-keyword">from</span> trl <span class="code-keyword">import</span> KTOTrainer, KTOConfig
+<span class="code-keyword">from</span> datasets <span class="code-keyword">import</span> load_dataset
+
+kto_config = KTOConfig(
+    output_dir=<span class="code-string">"./kto_aligned_model"</span>,
+    beta=<span class="code-number">0.1</span>,
+    desirable_weight=<span class="code-number">1.0</span>,       <span class="code-comment"># Weight for positive feedback</span>
+    undesirable_weight=<span class="code-number">1.33</span>,     <span class="code-comment"># Kahneman-Tversky loss aversion</span>
+    learning_rate=<span class="code-number">5e-7</span>,
+    per_device_train_batch_size=<span class="code-number">4</span>,
+    max_length=<span class="code-number">2048</span>,
+)
+
+dataset = load_dataset(<span class="code-string">"Anthropic/hh-rlhf"</span>, split=<span class="code-string">"train"</span>)  <span class="code-comment"># Formatted as unpaired</span>
+
+trainer = KTOTrainer(
+    model=<span class="code-string">"meta-llama/Llama-3.1-8B-Instruct"</span>,
+    args=kto_config,
+    train_dataset=dataset,
+)
+trainer.train()</code></pre>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+        <h2 id="decision-guide">9. Strategic Decision Framework: Which Algorithm When?</h2>
+        <p>
+            Choosing the right alignment algorithm depends directly on your compute budget, data format, and end-use objective:
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0;">
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 1.5rem; border-radius: 12px;">
+                <h4 style="color: #fb923c; margin-top: 0;">Choose PPO If:</h4>
+                <ul style="padding-left: 1.2rem; font-size: 0.95rem;">
+                    <li>You have a multi-turn conversational environment where dense intermediate token rewards are essential.</li>
+                    <li>You have high-compute cluster infrastructure to comfortably host 4 models in VRAM.</li>
+                </ul>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 1.5rem; border-radius: 12px;">
+                <h4 style="color: var(--primary); margin-top: 0;">Choose DPO / DPDO If:</h4>
+                <ul style="padding-left: 1.2rem; font-size: 0.95rem;">
+                    <li>You have curated pairwise preference datasets $(x, y_w, y_l)$.</li>
+                    <li>You want fast, stable offline training without generating rollouts during training.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0;">
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 1.5rem; border-radius: 12px;">
+                <h4 style="color: var(--secondary); margin-top: 0;">Choose GRPO If:</h4>
+                <ul style="padding-left: 1.2rem; font-size: 0.95rem;">
+                    <li>You are training reasoning agents for math, code, or scientific proof generation.</li>
+                    <li>You have verifiable, rule-based reward functions (compiler, unit tests, symbolic solvers).</li>
+                    <li>You want to eliminate Critic VRAM overhead and enable 32k+ token long-chain rollouts.</li>
+                </ul>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--glass-border); padding: 1.5rem; border-radius: 12px;">
+                <h4 style="color: #f472b6; margin-top: 0;">Choose KTO If:</h4>
+                <ul style="padding-left: 1.2rem; font-size: 0.95rem;">
+                    <li>You are deploying directly on real-world production telemetry (thumbs-up / thumbs-down ratings).</li>
+                    <li>You want to align on unpaired single responses with human loss aversion.</li>
+                </ul>
+            </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+        <h2 id="references">10. Primary Literature & Foundational Papers</h2>
+        <p>
+            For readers who want to explore the original proofs, ablation experiments, and algorithmic variations, here are the landmark papers that established these post-training methods:
+        </p>
+
+        <div class="reference-grid">
+            <!-- Reference 1: PPO Original -->
+            <div class="reference-card">
+                <h4>1. Proximal Policy Optimization Algorithms</h4>
+                <div class="ref-authors">John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, Oleg Klimov (OpenAI)</div>
+                <div>
+                    <span class="ref-venue">arXiv 2017</span>
+                    <a href="https://arxiv.org/abs/1707.06347" target="_blank" class="paper-link-badge">arXiv:1707.06347 ↗</a>
+                </div>
+                <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
+                    Introduces the clipped surrogate policy objective and GAE advantage estimation that formed the core of modern deep reinforcement learning.
+                </p>
+            </div>
+
+            <!-- Reference 2: InstructGPT -->
+            <div class="reference-card">
+                <h4>2. Training Language Models to Follow Instructions with Human Feedback (InstructGPT)</h4>
+                <div class="ref-authors">Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, et al. (OpenAI)</div>
+                <div>
+                    <span class="ref-venue">NeurIPS 2022</span>
+                    <a href="https://arxiv.org/abs/2203.02155" target="_blank" class="paper-link-badge">arXiv:2203.02155 ↗</a>
+                </div>
+                <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
+                    The landmark paper that successfully adapted PPO to align LLMs using reward models trained on human pairwise preferences.
+                </p>
+            </div>
+
+            <!-- Reference 3: DPO -->
+            <div class="reference-card">
+                <h4>3. Direct Preference Optimization: Your Language Model Is Secretly a Reward Model</h4>
+                <div class="ref-authors">Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, Chelsea Finn (Stanford University)</div>
+                <div>
+                    <span class="ref-venue">NeurIPS 2023 (Oral)</span>
+                    <a href="https://arxiv.org/abs/2305.18290" target="_blank" class="paper-link-badge">arXiv:2305.18290 ↗</a>
+                </div>
+                <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
+                    Derives the exact closed-form mapping between Bradley-Terry preferences and optimal language model policies, eliminating the explicit reward model.
+                </p>
+            </div>
+
+            <!-- Reference 4: GRPO / DeepSeekMath -->
+            <div class="reference-card">
+                <h4>4. DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models</h4>
+                <div class="ref-authors">Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Mingchuan Zhang, Y.K. Li, Y. Wu, Daya Guo (DeepSeek-AI)</div>
+                <div>
+                    <span class="ref-venue">arXiv 2024</span>
+                    <a href="https://arxiv.org/abs/2402.03300" target="_blank" class="paper-link-badge">arXiv:2402.03300 ↗</a>
+                </div>
+                <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
+                    Introduces Group Relative Policy Optimization (GRPO) to discard the critic network and compute normalized advantage baselines over sampled output groups.
+                </p>
+            </div>
+
+            <!-- Reference 5: DeepSeek-R1 -->
+            <div class="reference-card">
+                <h4>5. DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning</h4>
+                <div class="ref-authors">DeepSeek-AI Team (DeepSeek-AI)</div>
+                <div>
+                    <span class="ref-venue">arXiv 2025</span>
+                    <a href="https://arxiv.org/abs/2501.12948" target="_blank" class="paper-link-badge">arXiv:2501.12948 ↗</a>
+                </div>
+                <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
+                    Demonstrates large-scale emergent chain-of-thought reasoning, self-reflection, and test-time search using pure reinforcement learning (GRPO) with zero initial SFT data in DeepSeek-R1-Zero.
+                </p>
+            </div>
+
+            <!-- Reference 6: KTO -->
+            <div class="reference-card">
+                <h4>6. KTO: Model Alignment as Prospect Theoretic Optimization</h4>
+                <div class="ref-authors">Kawin Ethayarajh, Winnie Xu, Niklas Muennighoff, Dan Jurafsky, Douwe Kiela (Contextual AI & Stanford University)</div>
+                <div>
+                    <span class="ref-venue">ICML 2024</span>
+                    <a href="https://arxiv.org/abs/2402.01306" target="_blank" class="paper-link-badge">arXiv:2402.01306 ↗</a>
+                </div>
+                <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
+                    Replaces paired preferences with Kahneman & Tversky's Prospect Theory, enabling direct optimization on binary unpaired real-world user telemetry with human loss aversion.
+                </p>
+            </div>
+
+            <!-- Reference 7: DPDO / Decoupled Preference -->
+            <div class="reference-card">
+                <h4>7. Direct Preference Distribution Optimization & Decoupled Alignment Dynamics</h4>
+                <div class="ref-authors">Z. Tang, Y. Liu, et al. / Research Community</div>
+                <div>
+                    <span class="ref-venue">arXiv / NeurIPS Workshops 2024</span>
+                    <a href="https://arxiv.org/abs/2402.08643" target="_blank" class="paper-link-badge">arXiv:2402.08643 ↗</a>
+                </div>
+                <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
+                    Addresses margin collapse and token-level vocabulary drift by decoupling positive chosen reinforcement from negative rejected penalization with explicit boundary margins.
+                </p>
+            </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid var(--glass-border); margin: 3rem 0;">
+
+        <h2 id="conclusion">11. Conclusion & The Post-Training Frontier</h2>
+        <p>
+            The post-training landscape has fundamentally transformed. What started as complex 4-model PPO orchestration has crystallized into specialized, highly effective algorithms:
+        </p>
+        <ul>
+            <li><strong>PPO</strong> remains the foundation of actor-critic policy optimization in dense token-reward environments.</li>
+            <li><strong>DPO and DPDO</strong> established that direct optimization over implicit rewards is not only feasible, but often superior to explicit reward modeling for static preferences.</li>
+            <li><strong>GRPO</strong> proved that critic-free group-relative reinforcement learning is the key that unlocks emergent reasoning and test-time search in foundation models.</li>
+            <li><strong>KTO</strong> grounded alignment in behavioral economics, bridging the gap between academic pairwise benchmarking and production-scale binary telemetry.</li>
+        </ul>
+        <p>
+            As models continue to transition from conversational chatbots into autonomous reasoning agents, mastering these post-training paradigms is essential for building robust, reliable, and capable AI systems.
+        </p>
+
+        <!-- Tech Tags -->
+        <div class="tech-stack">
+            <span class="tech-tag">Reinforcement Learning</span>
+            <span class="tech-tag">LLM Alignment</span>
+            <span class="tech-tag">PPO</span>
+            <span class="tech-tag">DPO</span>
+            <span class="tech-tag">DeepSeek GRPO</span>
+            <span class="tech-tag">DPDO</span>
+            <span class="tech-tag">KTO</span>
+            <span class="tech-tag">Post-Training</span>
+            <span class="tech-tag">PyTorch</span>
+        </div>
+    </article>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="socials">
+                <a href="https://github.com/RaviSriTejaKuriseti" target="_blank"><img src="../assets/img/ghub.png"
+                        alt="Github"></a>
+                <a href="https://www.linkedin.com/in/ravi-sri-teja-kuriseti-83b9681b0/" target="_blank"><img
+                        src="../assets/img/linkedin.png" alt="LinkedIn"></a>
+            </div>
+            <p>&copy; 2026 Kuriseti Ravi Sri Teja. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+
+</html>
