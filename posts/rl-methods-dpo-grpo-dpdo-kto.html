@@ -285,6 +285,12 @@
             background: rgba(6, 182, 212, 0.25);
             border-color: var(--secondary);
             transform: translateY(-1px);
+            color: #ffffff;
+        }
+
+        .paper-link-badge svg {
+            stroke: currentColor;
+            flex-shrink: 0;
         }
 
         .reference-grid {
@@ -359,17 +365,21 @@
     <!-- Header -->
     <header class="post-header container">
         <div data-aos="fade-down">
+            <a href="../blog.html" class="back-link">← Back to Blog</a>
             <span class="post-meta">Reinforcement Learning & LLM Post-Training • August 14, 2026</span>
             <h1 style="font-size: 2.6rem; max-width: 900px; margin: 0 auto; line-height: 1.25;">
                 Demystifying Modern LLM Alignment: <span style="background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">PPO, DPO, GRPO, DPDO, and KTO</span>
             </h1>
+            <p class="post-subtitle">Aligning large language models with human intent has evolved from fragile actor-critic PPO pipelines to closed-form direct optimization (DPO, DPDO, KTO) and scalable, critic-free reasoning engines like DeepSeek's GRPO. Here is the mathematical and architectural story.</p>
+            <div class="author-box">
+                <img src="../assets/img/person.jpg" alt="Kuriseti Ravi Sri Teja" class="author-avatar">
+                <span>By <strong>Kuriseti Ravi Sri Teja</strong> • 23 min read</span>
+            </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <article class="post-content" data-aos="fade-up">
-        <a href="../blog.html" class="back-link">← Back to all posts</a>
-
         <div class="quote-box">
             "Aligning large language models with human preferences has evolved from complex 4-model actor-critic loops (PPO) into closed-form implicit losses (DPO, DPDO, KTO) and scalable critic-free group-relative reasoning engines (GRPO)."
         </div>
@@ -412,8 +422,8 @@
         <h2 id="ppo">2. PPO (Proximal Policy Optimization): The Classical 4-Model Actor-Critic Baseline</h2>
         <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             <span class="callout-badge" style="background: rgba(251, 146, 60, 0.2); color: #fb923c;">Foundational Actor-Critic</span>
-            <a href="https://arxiv.org/abs/1707.06347" target="_blank" class="paper-link-badge">📄 Paper: Schulman et al. (OpenAI 2017) →</a>
-            <a href="https://arxiv.org/abs/2203.02155" target="_blank" class="paper-link-badge">📄 Paper: InstructGPT / Ouyang et al. (NeurIPS 2022) →</a>
+            <a href="https://arxiv.org/abs/1707.06347" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> Paper: Schulman et al. (OpenAI 2017) <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+            <a href="https://arxiv.org/abs/2203.02155" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> Paper: InstructGPT / Ouyang et al. (NeurIPS 2022) <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
         </div>
         <p>
             First introduced by Schulman et al. (OpenAI, 2017) and adapted for language models in InstructGPT (Ouyang et al., 2022), <strong>Proximal Policy Optimization (PPO)</strong> served as the foundation of modern RLHF.
@@ -475,7 +485,7 @@
         <h2 id="dpo">3. DPO (Direct Preference Optimization): The Closed-Form Breakthrough</h2>
         <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             <span class="callout-badge">Direct Optimization</span>
-            <a href="https://arxiv.org/abs/2305.18290" target="_blank" class="paper-link-badge">📄 Paper: Rafailov et al. (NeurIPS 2023) →</a>
+            <a href="https://arxiv.org/abs/2305.18290" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> Paper: Rafailov et al. (NeurIPS 2023) <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
         </div>
         <p>
             Introduced by Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, and Chelsea Finn (Stanford University, 2023), <strong>Direct Preference Optimization (DPO)</strong> proved that one does not need to explicitly train a reward model $r(x,y)$ and then run reinforcement learning on top. Instead, there exists an exact analytical mapping between the optimal policy $\pi^*(y|x)$ and the underlying ground-truth reward function.
@@ -531,8 +541,8 @@
         <h2 id="grpo">4. GRPO (Group Relative Policy Optimization): The Reasoning Engine Behind DeepSeek-R1</h2>
         <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             <span class="callout-badge" style="background: rgba(6, 182, 212, 0.2); color: var(--secondary);">Reasoning & Test-Time Compute</span>
-            <a href="https://arxiv.org/abs/2402.03300" target="_blank" class="paper-link-badge">📄 Paper: Shao et al. (DeepSeekMath 2024) →</a>
-            <a href="https://arxiv.org/abs/2501.12948" target="_blank" class="paper-link-badge">📄 Paper: DeepSeek-R1 (2025) →</a>
+            <a href="https://arxiv.org/abs/2402.03300" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> Paper: Shao et al. (DeepSeekMath 2024) <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+            <a href="https://arxiv.org/abs/2501.12948" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> Paper: DeepSeek-R1 (2025) <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
         </div>
         <p>
             Introduced by DeepSeek in <em>DeepSeekMath</em> (Shao et al., 2024) and scaled to unprecedented heights in <strong>DeepSeek-R1</strong>, <strong>Group Relative Policy Optimization (GRPO)</strong> is an online reinforcement learning algorithm specifically architected for complex reasoning, mathematical theorem proving, and code generation.
@@ -583,7 +593,7 @@
         <h2 id="dpdo">5. DPDO (Direct Policy Distribution Optimization): Stabilizing Margin Dynamics</h2>
         <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             <span class="callout-badge">Distributional Alignment</span>
-            <a href="https://arxiv.org/abs/2402.08643" target="_blank" class="paper-link-badge">📄 Paper: Distribution & Decoupled Preference Optimization →</a>
+            <a href="https://arxiv.org/abs/2402.08643" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> Paper: Distribution & Decoupled Preference Optimization <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
         </div>
         <p>
             While standard DPO works exceptionally well on small-scale preference sets, subsequent research revealed subtle failure modes in standard Bradley-Terry optimization:
@@ -614,7 +624,7 @@
         <h2 id="kto">6. KTO (Kahneman-Tversky Optimization): Aligning with Binary Real-World Signals</h2>
         <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
             <span class="callout-badge" style="background: rgba(244, 114, 182, 0.2); color: #f472b6;">Behavioral Economics</span>
-            <a href="https://arxiv.org/abs/2402.01306" target="_blank" class="paper-link-badge">📄 Paper: Ethayarajh et al. (ICML 2024) →</a>
+            <a href="https://arxiv.org/abs/2402.01306" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> Paper: Ethayarajh et al. (ICML 2024) <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
         </div>
         <p>
             Developed by Kawin Ethayarajh, Winnie Xu, Niklas Muennighoff, Dan Jurafsky, and Douwe Kiela (Contextual AI & Stanford University, 2024), <strong>Kahneman-Tversky Optimization (KTO)</strong> takes a radically different perspective inspired by behavioral economics and Daniel Kahneman & Amos Tversky's Nobel Prize-winning <strong>Prospect Theory</strong>.
@@ -1054,7 +1064,7 @@ trainer.train()</code></pre>
                 <div class="ref-authors">John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, Oleg Klimov (OpenAI)</div>
                 <div>
                     <span class="ref-venue">arXiv 2017</span>
-                    <a href="https://arxiv.org/abs/1707.06347" target="_blank" class="paper-link-badge">arXiv:1707.06347 ↗</a>
+                    <a href="https://arxiv.org/abs/1707.06347" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> arXiv:1707.06347 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
                 </div>
                 <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
                     Introduces the clipped surrogate policy objective and GAE advantage estimation that formed the core of modern deep reinforcement learning.
@@ -1067,7 +1077,7 @@ trainer.train()</code></pre>
                 <div class="ref-authors">Long Ouyang, Jeff Wu, Xu Jiang, Diogo Almeida, Carroll L. Wainwright, Pamela Mishkin, et al. (OpenAI)</div>
                 <div>
                     <span class="ref-venue">NeurIPS 2022</span>
-                    <a href="https://arxiv.org/abs/2203.02155" target="_blank" class="paper-link-badge">arXiv:2203.02155 ↗</a>
+                    <a href="https://arxiv.org/abs/2203.02155" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> arXiv:2203.02155 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
                 </div>
                 <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
                     The landmark paper that successfully adapted PPO to align LLMs using reward models trained on human pairwise preferences.
@@ -1080,7 +1090,7 @@ trainer.train()</code></pre>
                 <div class="ref-authors">Rafael Rafailov, Archit Sharma, Eric Mitchell, Stefano Ermon, Christopher D. Manning, Chelsea Finn (Stanford University)</div>
                 <div>
                     <span class="ref-venue">NeurIPS 2023 (Oral)</span>
-                    <a href="https://arxiv.org/abs/2305.18290" target="_blank" class="paper-link-badge">arXiv:2305.18290 ↗</a>
+                    <a href="https://arxiv.org/abs/2305.18290" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> arXiv:2305.18290 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
                 </div>
                 <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
                     Derives the exact closed-form mapping between Bradley-Terry preferences and optimal language model policies, eliminating the explicit reward model.
@@ -1093,7 +1103,7 @@ trainer.train()</code></pre>
                 <div class="ref-authors">Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Mingchuan Zhang, Y.K. Li, Y. Wu, Daya Guo (DeepSeek-AI)</div>
                 <div>
                     <span class="ref-venue">arXiv 2024</span>
-                    <a href="https://arxiv.org/abs/2402.03300" target="_blank" class="paper-link-badge">arXiv:2402.03300 ↗</a>
+                    <a href="https://arxiv.org/abs/2402.03300" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> arXiv:2402.03300 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
                 </div>
                 <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
                     Introduces Group Relative Policy Optimization (GRPO) to discard the critic network and compute normalized advantage baselines over sampled output groups.
@@ -1106,7 +1116,7 @@ trainer.train()</code></pre>
                 <div class="ref-authors">DeepSeek-AI Team (DeepSeek-AI)</div>
                 <div>
                     <span class="ref-venue">arXiv 2025</span>
-                    <a href="https://arxiv.org/abs/2501.12948" target="_blank" class="paper-link-badge">arXiv:2501.12948 ↗</a>
+                    <a href="https://arxiv.org/abs/2501.12948" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> arXiv:2501.12948 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
                 </div>
                 <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
                     Demonstrates large-scale emergent chain-of-thought reasoning, self-reflection, and test-time search using pure reinforcement learning (GRPO) with zero initial SFT data in DeepSeek-R1-Zero.
@@ -1119,7 +1129,7 @@ trainer.train()</code></pre>
                 <div class="ref-authors">Kawin Ethayarajh, Winnie Xu, Niklas Muennighoff, Dan Jurafsky, Douwe Kiela (Contextual AI & Stanford University)</div>
                 <div>
                     <span class="ref-venue">ICML 2024</span>
-                    <a href="https://arxiv.org/abs/2402.01306" target="_blank" class="paper-link-badge">arXiv:2402.01306 ↗</a>
+                    <a href="https://arxiv.org/abs/2402.01306" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> arXiv:2402.01306 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
                 </div>
                 <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
                     Replaces paired preferences with Kahneman & Tversky's Prospect Theory, enabling direct optimization on binary unpaired real-world user telemetry with human loss aversion.
@@ -1132,7 +1142,7 @@ trainer.train()</code></pre>
                 <div class="ref-authors">Z. Tang, Y. Liu, et al. / Research Community</div>
                 <div>
                     <span class="ref-venue">arXiv / NeurIPS Workshops 2024</span>
-                    <a href="https://arxiv.org/abs/2402.08643" target="_blank" class="paper-link-badge">arXiv:2402.08643 ↗</a>
+                    <a href="https://arxiv.org/abs/2402.08643" target="_blank" class="paper-link-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg> arXiv:2402.08643 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
                 </div>
                 <p style="font-size: 0.95rem; margin: 0.6rem 0 0; color: var(--text-dim);">
                     Addresses margin collapse and token-level vocabulary drift by decoupling positive chosen reinforcement from negative rejected penalization with explicit boundary margins.
