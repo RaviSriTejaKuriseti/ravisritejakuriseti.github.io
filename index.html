@@ -5,28 +5,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kuriseti Ravi Sri Teja | Machine Learning Engineer</title>
-  <meta name="description" content="Personal portfolio and blog of Kuriseti Ravi Sri Teja — Machine Learning Engineer and IIT Delhi alumnus.">
+  <meta name="description" content="Personal portfolio and technical writing of Kuriseti Ravi Sri Teja — Machine Learning Engineer at Eightfold AI and IIT Delhi CSE alumnus.">
 
   <!-- Favicon -->
   <link rel="shortcut icon" href="./assets/img/logo.jpeg" type="image/x-icon">
 
   <!-- Styles -->
   <link rel="stylesheet" href="style.css">
-
-  <!-- Animate on Scroll -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 
 <body>
 
-  <div class="bg-glow">
-    <div class="glow-orb"></div>
-    <div class="glow-orb-2"></div>
-  </div>
+  <div class="bg-glow"></div>
 
+  <!-- Navigation -->
   <nav>
     <div class="container">
-      <div class="logo">RAVI SRI TEJA</div>
+      <div class="logo">
+        <span class="logo-dot"></span>
+        RAVI SRI TEJA
+      </div>
       <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
         <span></span>
         <span></span>
@@ -34,26 +32,37 @@
       </button>
       <ul id="navMenu">
         <li><a href="#home">Home</a></li>
+        <li><a href="#overview">Overview</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#experience">Experience</a></li>
-        <li><a href="#education">Education</a></li>
+        <li><a href="#publications">Research</a></li>
         <li><a href="#skills">Skills</a></li>
-        <li><a href="#publications">Publications</a></li>
         <li><a href="#projects">Projects</a></li>
         <li><a href="blog.html">Blog</a></li>
       </ul>
     </div>
   </nav>
 
-  <header class="hero" id="home"
-    style="background: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.65)), url('./assets/img/hero_bg.png'); background-size: cover; background-position: center;">
-    <div class="hero-content" data-aos="zoom-out" data-aos-duration="1500">
+  <!-- Hero Section -->
+  <header class="hero" id="home">
+    <div class="hero-content reveal">
+      <div class="hero-status-pill">
+        <span class="hero-status-dot"></span>
+        Building AI Interviewer @ Eightfold AI
+      </div>
       <h1>Hi, I'm <span>KURISETI RAVI SRI TEJA</span></h1>
       <p>
         <span id="typewriter" class="hero-typewriter">Machine Learning Engineer</span>
       </p>
+
+      <div class="hero-cred-chips">
+        <div class="cred-chip"><strong>Alma Mater:</strong> IIT Delhi (CSE '23)</div>
+        <div class="cred-chip"><strong>Current:</strong> MLE @ Eightfold AI</div>
+        <div class="cred-chip"><strong>Research:</strong> WACV 2024 Author</div>
+      </div>
+
       <div class="hero-btns">
-        <a href="#about" class="btn btn-primary">About Me</a>
+        <a href="#overview" class="btn btn-primary">Explore Overview</a>
         <a href="assets/RESUME.pdf" target="_blank" class="btn btn-outline">Download CV</a>
       </div>
 
@@ -68,33 +77,85 @@
         </a>
         <a href="blog.html" class="hero-social-pill">
           <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-          Personal Blog
+          Technical Blog
         </a>
       </div>
     </div>
   </header>
 
+  <!-- Dual-Track Executive Summary ("At a Glance") -->
+  <section id="overview" class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Executive Summary</div>
+      <h2 class="section-title">Core Engineering <span>Pillars</span></h2>
+      <p class="section-desc">A snapshot of practical impact across agentic intelligence, core systems engineering, and peer-reviewed algorithmic research.</p>
+    </div>
+
+    <div class="summary-grid reveal">
+      <!-- Pillar 1 -->
+      <div class="summary-card">
+        <div class="summary-icon">⚡</div>
+        <h3>Applied AI & Agentic Systems</h3>
+        <p>Architecting production-grade conversational intelligence at <strong>Eightfold AI</strong>. Designing stateful LangGraph reasoning loops, dynamic contextual probing, and real-time evaluation graphs for enterprise AI Interviewing.</p>
+        <div class="tech-tags">
+          <span class="tech-tag">LangGraph</span>
+          <span class="tech-tag">LLMs</span>
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">WebSockets</span>
+        </div>
+      </div>
+
+      <!-- Pillar 2 -->
+      <div class="summary-card">
+        <div class="summary-icon">🛡️</div>
+        <h3>Enterprise Core Systems</h3>
+        <p>Spearheaded enterprise OS migration from CentOS 7 to RHEL 9 at <strong>Cohesity</strong> across on-premises and hybrid cloud environments. Re-architected low-level networking, SELinux enforcement, and REST APIs for IPMI telemetry.</p>
+        <div class="tech-tags">
+          <span class="tech-tag">Linux Kernel</span>
+          <span class="tech-tag">RHEL 9</span>
+          <span class="tech-tag">SELinux</span>
+          <span class="tech-tag">C++ / Go</span>
+        </div>
+      </div>
+
+      <!-- Pillar 3 -->
+      <div class="summary-card">
+        <div class="summary-icon">🔬</div>
+        <h3>Algorithmic Computer Vision</h3>
+        <p>Formulated exact <strong>Min-cost network flow</strong> bipartite matching alternatives for transformer-based object detection (DETRs). Published as first-tier peer-reviewed research at <strong>WACV 2024</strong> (CVF).</p>
+        <div class="tech-tags">
+          <span class="tech-tag">Transformers</span>
+          <span class="tech-tag">WACV 2024</span>
+          <span class="tech-tag">Graph Algorithms</span>
+          <span class="tech-tag">PyTorch</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
   <section id="about" class="container">
     <div class="about-grid">
-      <div class="about-image" data-aos="fade-right">
+      <div class="about-image reveal">
         <img src="./assets/img/person.jpg" alt="Kuriseti Ravi Sri Teja">
       </div>
-      <div class="about-info" data-aos="fade-left">
+      <div class="about-info reveal">
+        <div class="section-tag">Background</div>
         <h2 class="section-title">About <span>Me</span></h2>
-        <p>I'm a Machine Learning Engineer at <strong>Eightfold AI</strong> building intelligent systems. A Computer Science graduate from <strong>IIT Delhi ('23)</strong> with a deep passion for LLM architectures, transformer-based perception, and scalable distributed systems.</p>
-        <p style="margin-top: 1rem; color: var(--text-dim);">When I'm not training models or optimizing micro-benchmarks, I research and write technical deep dives on reinforcement learning alignment, agent protocols, and systems engineering.</p>
+        <p>I'm a Machine Learning Engineer at <strong>Eightfold AI</strong> focused on high-reliability AI systems. I graduated in Computer Science from <strong>IIT Delhi ('23)</strong> with an emphasis on artificial intelligence, deep learning, and distributed infrastructure.</p>
+        <p style="margin-top: 1rem; color: var(--text-dim);">My technical focus spans the boundary between high-level reasoning models and bare-metal systems—from tuning reinforcement learning alignment (PPO, DPO, GRPO) and tool-use protocols (MCP) to Linux kernel network hardening and low-level C++ architectures.</p>
         
         <div class="stats-grid">
           <div class="stat-item">
             <div class="stat-label">Alma Mater</div>
-            <div class="stat-value">IIT Delhi (B.Tech CSE '23)</div>
+            <div class="stat-value">IIT Delhi (CSE '23)</div>
           </div>
           <div class="stat-item">
             <div class="stat-label">Current Role</div>
             <div class="stat-value">MLE @ Eightfold AI</div>
           </div>
           <div class="stat-item">
-            <div class="stat-label">Research</div>
+            <div class="stat-label">Peer-Reviewed Research</div>
             <div class="stat-value">WACV 2024 Author</div>
           </div>
           <div class="stat-item">
@@ -108,11 +169,16 @@
 
   <!-- Experience Timeline -->
   <section id="experience" class="container">
-    <h2 class="section-title" data-aos="fade-up">Professional <span>Experience</span></h2>
+    <div class="section-header reveal">
+      <div class="section-tag">Career History</div>
+      <h2 class="section-title">Professional <span>Experience</span></h2>
+      <p class="section-desc">Roles spanning autonomous AI workflows, large-scale enterprise OS migrations, and low-level systems engineering.</p>
+    </div>
+
     <div class="timeline">
       
       <!-- Eightfold AI -->
-      <div class="timeline-item" data-aos="fade-up">
+      <div class="timeline-item reveal">
         <div class="timeline-dot"></div>
         <div class="timeline-card">
           <div class="timeline-header">
@@ -120,7 +186,8 @@
             <span class="badge-tag">Nov 2025 - Present</span>
           </div>
           <h4>Eightfold AI • Bangalore</h4>
-          <p>Building the <strong>AI Interviewer</strong>, integrating conversational intelligence, structured reasoning loops, and scalable backend workflows.</p>
+          <p><strong>Impact:</strong> Building the autonomous <strong>AI Technical Interviewer</strong> to deliver human-caliber candidate evaluations with zero hallucinated scoring.</p>
+          <p style="margin-top: 0.5rem;"><strong>Technical Scope:</strong> Architected stateful multi-step execution graphs in LangGraph, integrated streaming LLM response loops, and built real-time WebSocket orchestration for dynamic conversational probing.</p>
           <div class="tech-tags">
             <span class="tech-tag">Large Language Models</span>
             <span class="tech-tag">LangGraph</span>
@@ -131,7 +198,7 @@
       </div>
 
       <!-- Cohesity MTS-2 -->
-      <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+      <div class="timeline-item reveal">
         <div class="timeline-dot"></div>
         <div class="timeline-card">
           <div class="timeline-header">
@@ -139,7 +206,8 @@
             <span class="badge-tag">Oct 2024 - Nov 2025</span>
           </div>
           <h4>Cohesity • Bangalore</h4>
-          <p>Spearheaded comprehensive enterprise OS migration from CentOS 7 to RHEL 9 across on-premises, multi-cloud, and hybrid deployments. Overhauled SELinux policies, firewall routing, and the core low-level networking stack for enterprise data protection.</p>
+          <p><strong>Impact:</strong> Led the company-wide OS transition from end-of-life CentOS 7 to RHEL 9 across hybrid multi-cloud and on-prem enterprise clusters with zero unplanned customer downtime.</p>
+          <p style="margin-top: 0.5rem;"><strong>Technical Scope:</strong> Overhauled SELinux confinement profiles, refactored firewall packet routing, and resolved low-level Linux networking bottlenecks across distributed storage node appliances.</p>
           <div class="tech-tags">
             <span class="tech-tag">RHEL 9</span>
             <span class="tech-tag">SELinux</span>
@@ -151,7 +219,7 @@
       </div>
 
       <!-- Cohesity MTS-1 -->
-      <div class="timeline-item" data-aos="fade-up" data-aos-delay="150">
+      <div class="timeline-item reveal">
         <div class="timeline-dot"></div>
         <div class="timeline-card">
           <div class="timeline-header">
@@ -159,7 +227,8 @@
             <span class="badge-tag">July 2023 - Sept 2024</span>
           </div>
           <h4>Cohesity • Bangalore</h4>
-          <p>Designed and deployed high-performance RESTful APIs for remote cluster and hardware management, enabling programmatic control of IPMI users, chassis telemetry, and distributed storage drives.</p>
+          <p><strong>Impact:</strong> Designed high-throughput RESTful management microservices powering hardware diagnostics and automated chassis discovery across cluster nodes.</p>
+          <p style="margin-top: 0.5rem;"><strong>Technical Scope:</strong> Built programmatic IPMI telemetry daemons, storage drive health checks, and low-latency hardware abstraction layers in C++ and Go.</p>
           <div class="tech-tags">
             <span class="tech-tag">C++</span>
             <span class="tech-tag">Go</span>
@@ -171,7 +240,7 @@
       </div>
 
       <!-- Vision Lab IIT Delhi -->
-      <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+      <div class="timeline-item reveal">
         <div class="timeline-dot"></div>
         <div class="timeline-card">
           <div class="timeline-header">
@@ -179,7 +248,8 @@
             <span class="badge-tag">July 2022 - May 2023</span>
           </div>
           <h4>Vision-Lab, IIT Delhi</h4>
-          <p>Conducted novel computer vision research investigating failure modes of transformer-based pedestrian detection. Formulated bipartite matching alternatives that resulted in our WACV 2024 publication.</p>
+          <p><strong>Impact:</strong> Uncovered fundamental failure modes in transformer one-to-one Hungarian matching on crowded pedestrian datasets, producing our WACV 2024 publication.</p>
+          <p style="margin-top: 0.5rem;"><strong>Technical Scope:</strong> Formulated an exact Min-cost-flow bipartite matching algorithm supporting many-to-one assignments, achieving consistent miss-rate reductions across CrowdHuman benchmarks.</p>
           <div class="tech-tags">
             <span class="tech-tag">PyTorch</span>
             <span class="tech-tag">Transformers</span>
@@ -190,7 +260,7 @@
       </div>
 
       <!-- Cohesity Intern -->
-      <div class="timeline-item" data-aos="fade-up" data-aos-delay="250">
+      <div class="timeline-item reveal">
         <div class="timeline-dot"></div>
         <div class="timeline-card">
           <div class="timeline-header">
@@ -198,7 +268,7 @@
             <span class="badge-tag">May 2022 - July 2022</span>
           </div>
           <h4>Cohesity • Bangalore</h4>
-          <p>Engineered core backend extensions and telemetry tooling to support Cohesity Next-Generation Cloud Edition (NGCE) clusters on Google Cloud Platform.</p>
+          <p><strong>Impact:</strong> Accelerated the qualification and deployment of Cohesity Next-Generation Cloud Edition (NGCE) clusters on Google Cloud Platform.</p>
           <div class="tech-tags">
             <span class="tech-tag">GCP</span>
             <span class="tech-tag">Cloud Infrastructure</span>
@@ -210,44 +280,51 @@
     </div>
   </section>
 
-  <!-- Education Section -->
-  <section id="education" class="container">
-    <h2 class="section-title" data-aos="fade-up">Academic <span>Background</span></h2>
-    <div class="card-grid">
-      <div class="card" data-aos="fade-up" data-aos-delay="100">
-        <span class="badge-tag">2019 - 2023</span>
-        <h3>B.Tech in Computer Science</h3>
-        <h4>Indian Institute of Technology, Delhi</h4>
-        <p>Specialization in Artificial Intelligence & Deep Learning.</p>
-        <p style="font-weight: 600; color: var(--secondary); margin-top: 0.5rem;">GPA: 8.64 / 10.0</p>
+  <!-- Research Publications -->
+  <section id="publications" class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Peer-Reviewed Research</div>
+      <h2 class="section-title">Published <span>Works</span></h2>
+      <p class="section-desc">Novel algorithms addressing transformer assignment bottlenecks in computer vision.</p>
+    </div>
+
+    <div class="pub-card reveal">
+      <div class="pub-badge-row">
+        <span class="badge-tag">WACV 2024 • Computer Vision Foundation</span>
+        <span style="font-size: 0.82rem; color: var(--secondary); font-weight: 600;">Peer Reviewed • Oral/Poster</span>
       </div>
-      <div class="card" data-aos="fade-up" data-aos-delay="200">
-        <span class="badge-tag">2017 - 2019</span>
-        <h3>Intermediate (AP Board)</h3>
-        <h4>Sri Chaitanya Junior College, Vijayawada</h4>
-        <p>Mathematics, Physics, Chemistry.</p>
-        <p style="font-weight: 600; color: var(--secondary); margin-top: 0.5rem;">Grade: 10.0 / 10.0</p>
-      </div>
-      <div class="card" data-aos="fade-up" data-aos-delay="300">
-        <span class="badge-tag">2017</span>
-        <h3>High School (SSC)</h3>
-        <h4>Sri Chaitanya School, Vijayawada</h4>
-        <p>Foundational Sciences & Mathematics.</p>
-        <p style="font-weight: 600; color: var(--secondary); margin-top: 0.5rem;">Grade: 9.8 / 10.0</p>
+      <h3 class="pub-title">Favoring One Among Equals - Not a Good Idea: Many-to-One Matching for Robust Transformer Based Pedestrian Detection</h3>
+      <p class="pub-authors">
+        <strong>Authors:</strong> K.N. Ajay Shastry, <strong>K. Ravi Sri Teja</strong>, Aditya Nigam, Chetan Arora
+      </p>
+      <p class="pub-abstract">
+        In this paper, we investigate why transformer-based object detectors suffer in crowded pedestrian benchmarks compared to traditional CNNs. We formulate an exact <strong>Min-cost-flow bipartite matching algorithm</strong> supporting many-to-one assignments, yielding substantial drops in miss rates across challenging benchmark datasets (CrowdHuman and CityPersons).
+      </p>
+      <div class="hero-btns" style="justify-content: flex-start; gap: 10px;">
+        <a href="https://openaccess.thecvf.com/content/WACV2024/papers/Shastry_Favoring_One_Among_Equals_-_Not_a_Good_Idea_Many-to-One_WACV_2024_paper.pdf"
+          target="_blank" class="btn btn-primary" style="padding: 9px 18px; font-size: 0.85rem;">Read Paper (PDF)</a>
+        <a href="https://openaccess.thecvf.com/content/WACV2024/supplemental/Shastry_Favoring_One_Among_WACV_2024_supplemental.pdf"
+          target="_blank" class="btn btn-outline" style="padding: 9px 18px; font-size: 0.85rem;">Supplementary</a>
+        <a href="https://github.com/ajayshastry08/Flow-Based-Matcher" target="_blank" class="btn btn-outline"
+          style="padding: 9px 18px; font-size: 0.85rem;">Code Repository</a>
+        <a href="posts/object-detection.html" class="btn btn-outline"
+          style="padding: 9px 18px; font-size: 0.85rem;">Behind the Paper Blog</a>
       </div>
     </div>
   </section>
 
   <!-- Technical Skills -->
   <section id="skills" class="container">
-    <h2 class="section-title" data-aos="fade-up">Technical <span>Skills</span></h2>
+    <div class="section-header reveal">
+      <div class="section-tag">Competencies</div>
+      <h2 class="section-title">Technical <span>Skills</span></h2>
+    </div>
+
     <div class="card-grid">
       
       <!-- Languages -->
-      <div class="card" data-aos="fade-up">
-        <h3 class="skills-category-title">
-          Programming Languages
-        </h3>
+      <div class="card reveal">
+        <h3 class="skills-category-title">Programming Languages</h3>
         <div class="skills-grid">
           <a href="https://www.python.org/" target="_blank" class="skill-tag">
             <img src="assets/img/python.svg" alt="Python">
@@ -273,10 +350,8 @@
       </div>
 
       <!-- AI & Frameworks -->
-      <div class="card" data-aos="fade-up" data-aos-delay="100">
-        <h3 class="skills-category-title">
-          AI & Agentic Frameworks
-        </h3>
+      <div class="card reveal">
+        <h3 class="skills-category-title">AI & Agentic Frameworks</h3>
         <div class="skills-grid">
           <a href="https://pytorch.org/" target="_blank" class="skill-tag">
             <img src="assets/img/pytorch.svg" alt="PyTorch">
@@ -306,10 +381,8 @@
       </div>
 
       <!-- Data & Scientific Compute -->
-      <div class="card" data-aos="fade-up" data-aos-delay="200">
-        <h3 class="skills-category-title">
-          Data & Scientific Compute
-        </h3>
+      <div class="card reveal">
+        <h3 class="skills-category-title">Data & Compute Infrastructure</h3>
         <div class="skills-grid">
           <a href="https://numpy.org/" target="_blank" class="skill-tag">
             <img src="assets/img/numpy.svg" alt="NumPy">
@@ -323,56 +396,32 @@
             <img src="assets/img/scipy.png" alt="SciPy">
             SciPy
           </a>
+          <div class="skill-tag">Linux / RHEL 9</div>
+          <div class="skill-tag">SELinux</div>
+          <div class="skill-tag">Docker</div>
         </div>
       </div>
 
-    </div>
-  </section>
-
-  <!-- Publications -->
-  <section id="publications" class="container">
-    <h2 class="section-title" data-aos="fade-up">Research <span>Publications</span></h2>
-    <div class="card-grid" style="grid-template-columns: 1fr;">
-      <div class="card" data-aos="fade-up">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 0.5rem;">
-          <span class="badge-tag">WACV 2024 • Computer Vision Foundation</span>
-          <span style="font-size: 0.85rem; color: var(--secondary); font-weight: 600;">Peer Reviewed</span>
-        </div>
-        <h3 style="font-size: 1.35rem; line-height: 1.4; margin-bottom: 0.75rem;">Favoring One Among Equals - Not a Good Idea: Many-to-One Matching for Robust Transformer Based Pedestrian Detection</h3>
-        <p style="font-size: 0.9rem; margin-bottom: 1rem; color: var(--text-dim);">
-          <strong>Authors:</strong> K.N. Ajay Shastry, <strong>K. Ravi Sri Teja</strong>, Aditya Nigam, Chetan Arora
-        </p>
-        <p style="font-size: 0.95rem; margin-bottom: 1.5rem; line-height: 1.7;">
-          In this paper, we investigate why transformer-based object detectors suffer in crowded pedestrian benchmarks compared to traditional CNNs. We formulate an exact <strong>Min-cost-flow bipartite matching algorithm</strong> supporting many-to-one assignments, yielding substantial drops in miss rates across challenging benchmark datasets (CrowdHuman and CityPersons).
-        </p>
-        <div class="hero-btns" style="display: flex; gap: 10px; flex-wrap: wrap;">
-          <a href="https://openaccess.thecvf.com/content/WACV2024/papers/Shastry_Favoring_One_Among_Equals_-_Not_a_Good_Idea_Many-to-One_WACV_2024_paper.pdf"
-            target="_blank" class="btn btn-primary" style="padding: 8px 20px; font-size: 0.85rem;">Read Paper (PDF)</a>
-          <a href="https://openaccess.thecvf.com/content/WACV2024/supplemental/Shastry_Favoring_One_Among_WACV_2024_supplemental.pdf"
-            target="_blank" class="btn btn-outline"
-            style="padding: 8px 20px; font-size: 0.85rem; margin-left: 0;">Supplementary</a>
-          <a href="https://github.com/ajayshastry08/Flow-Based-Matcher" target="_blank" class="btn btn-outline"
-            style="padding: 8px 20px; font-size: 0.85rem; margin-left: 0;">Code Repository</a>
-          <a href="posts/object-detection.html" class="btn btn-outline"
-            style="padding: 8px 20px; font-size: 0.85rem; margin-left: 0;">Behind the Paper Blog</a>
-        </div>
-      </div>
     </div>
   </section>
 
   <!-- Featured Projects -->
   <section id="projects" class="container">
-    <h2 class="section-title" data-aos="fade-up">Featured <span>Projects & Research</span></h2>
+    <div class="section-header reveal">
+      <div class="section-tag">Key Projects</div>
+      <h2 class="section-title">Featured <span>Engineering & Systems</span></h2>
+    </div>
+
     <div class="card-grid">
 
-      <div class="card project-card" data-aos="fade-up" data-aos-delay="100">
+      <div class="card project-card reveal">
         <div>
           <div class="project-header">
-            <span class="badge-tag">AI Systems</span>
+            <span class="badge-tag">Production AI</span>
           </div>
           <h3 class="project-title">AI Technical Interviewer</h3>
-          <p style="font-size: 0.92rem; color: var(--text-dim); margin-top: 0.5rem;">
-            Autonomous conversational system designed for technical interviewing. Incorporates stateful multi-step execution graphs, real-time evaluation, and contextual probing.
+          <p style="margin-top: 0.5rem;">
+            Autonomous conversational system for candidate technical assessment. Employs stateful execution graphs, automated contextual probing, and real-time evaluation with deterministic guardrails.
           </p>
         </div>
         <div>
@@ -385,14 +434,14 @@
         </div>
       </div>
 
-      <div class="card project-card" data-aos="fade-up" data-aos-delay="200">
+      <div class="card project-card reveal">
         <div>
           <div class="project-header">
             <span class="badge-tag">Open Source Research</span>
           </div>
           <h3 class="project-title">Flow-Based Matcher for Transformers</h3>
-          <p style="font-size: 0.92rem; color: var(--text-dim); margin-top: 0.5rem;">
-            Min-cost network flow based assignment engine solving the bipartite matching bottleneck in DETR architectures for dense pedestrian occlusion.
+          <p style="margin-top: 0.5rem;">
+            Min-cost network flow assignment engine solving the bipartite matching bottleneck in DETR architectures for dense pedestrian occlusion. Published at WACV 2024.
           </p>
         </div>
         <div>
@@ -401,20 +450,20 @@
             <span class="tech-tag">Graph Theory</span>
             <span class="tech-tag">WACV '24</span>
           </div>
-          <div style="margin-top: 1rem;">
-            <a href="https://github.com/ajayshastry08/Flow-Based-Matcher" target="_blank" class="btn btn-outline" style="padding: 6px 16px; font-size: 0.8rem; margin-left: 0;">View Code →</a>
+          <div style="margin-top: 1.25rem;">
+            <a href="https://github.com/ajayshastry08/Flow-Based-Matcher" target="_blank" class="btn btn-outline" style="padding: 7px 16px; font-size: 0.82rem;">View Code →</a>
           </div>
         </div>
       </div>
 
-      <div class="card project-card" data-aos="fade-up" data-aos-delay="300">
+      <div class="card project-card reveal">
         <div>
           <div class="project-header">
-            <span class="badge-tag">3rd Place • Hackathon</span>
+            <span class="badge-tag">3rd Place • Systems Hackathon</span>
           </div>
           <h3 class="project-title">Cohesity CTF Hackathon</h3>
-          <p style="font-size: 0.92rem; color: var(--text-dim); margin-top: 0.5rem;">
-            Secured 3rd place in Cohesity's company-wide Capture The Flag (CTF) hackathon, solving complex challenges across system exploitation, reverse engineering, cryptography, and network security.
+          <p style="margin-top: 0.5rem;">
+            Secured 3rd place in Cohesity's company-wide Capture The Flag competition, solving advanced problems in binary exploitation, reverse engineering, cryptography, and network security.
           </p>
         </div>
         <div>
@@ -430,74 +479,107 @@
     </div>
   </section>
 
+  <!-- Education Section -->
+  <section id="education" class="container">
+    <div class="section-header reveal">
+      <div class="section-tag">Academics</div>
+      <h2 class="section-title">Academic <span>Background</span></h2>
+    </div>
+
+    <div class="card-grid">
+      <div class="card reveal">
+        <span class="badge-tag">2019 - 2023</span>
+        <h3>B.Tech in Computer Science</h3>
+        <h4>Indian Institute of Technology, Delhi</h4>
+        <p>Specialization in Artificial Intelligence & Deep Learning.</p>
+        <p style="font-weight: 700; color: var(--secondary); margin-top: 0.5rem;">GPA: 8.64 / 10.0</p>
+      </div>
+      <div class="card reveal">
+        <span class="badge-tag">2017 - 2019</span>
+        <h3>Intermediate (AP Board)</h3>
+        <h4>Sri Chaitanya Junior College, Vijayawada</h4>
+        <p>Mathematics, Physics, Chemistry.</p>
+        <p style="font-weight: 700; color: var(--secondary); margin-top: 0.5rem;">Grade: 10.0 / 10.0</p>
+      </div>
+      <div class="card reveal">
+        <span class="badge-tag">2017</span>
+        <h3>High School (SSC)</h3>
+        <h4>Sri Chaitanya School, Vijayawada</h4>
+        <p>Foundational Sciences & Mathematics.</p>
+        <p style="font-weight: 700; color: var(--secondary); margin-top: 0.5rem;">Grade: 9.8 / 10.0</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Recent Blog Posts -->
   <section id="blog" class="container">
-    <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
-      <h2 class="section-title" data-aos="fade-up" style="margin-bottom: 0;">Recent <span>Technical Articles</span></h2>
-      <a href="blog.html" class="btn btn-outline" style="padding: 8px 20px; font-size: 0.85rem;" data-aos="fade-up">Browse All 13 Posts →</a>
+    <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+      <div>
+        <div class="section-tag">Writing</div>
+        <h2 class="section-title" style="margin-bottom: 0;">Recent <span>Technical Articles</span></h2>
+      </div>
+      <a href="blog.html" class="btn btn-outline" style="padding: 8px 20px; font-size: 0.85rem;">Browse All 13 Posts →</a>
     </div>
 
     <div class="card-grid">
 
       <!-- Post 1 -->
-      <div class="card" data-aos="fade-up" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <div class="card article-card reveal">
         <div>
           <span class="badge-tag">Autonomous Systems</span>
           <span class="date">October 2, 2026</span>
-          <h3 style="font-size: 1.2rem; line-height: 1.4;">The Rise and Future of Personal Intelligence Agents: From Meta Muse to Gemini Spark</h3>
-          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-dim);">
+          <h3>The Rise and Future of Personal Intelligence Agents: From Meta Muse to Gemini Spark</h3>
+          <p>
             How persistent, 24/7 background agents are replacing conversational chatbots with autonomous multi-step execution, sandboxed microVMs, and personal knowledge graphs.
           </p>
         </div>
         <div style="margin-top: 1.5rem;">
-          <a href="posts/personal-intelligence-agents.html" class="btn btn-primary" style="padding: 8px 18px; font-size: 0.8rem;">Read Article</a>
+          <a href="posts/personal-intelligence-agents.html" class="btn btn-primary" style="padding: 8px 18px; font-size: 0.82rem;">Read Article →</a>
         </div>
       </div>
 
       <!-- Post 2 -->
-      <div class="card" data-aos="fade-up" data-aos-delay="100" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <div class="card article-card reveal">
         <div>
           <span class="badge-tag">RL & Alignment</span>
           <span class="date">August 14, 2026</span>
-          <h3 style="font-size: 1.2rem; line-height: 1.4;">Demystifying Modern LLM Alignment: PPO, DPO, GRPO, DPDO, and KTO</h3>
-          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-dim);">
-            A deep architectural and mathematical dive into modern alignment algorithms—from classical actor-critic PPO to direct preference optimization and DeepSeek's GRPO.
+          <h3>Demystifying Modern LLM Alignment: PPO, DPO, GRPO, DPDO, and KTO</h3>
+          <p>
+            An architectural and mathematical deep dive into modern alignment algorithms—from classical actor-critic PPO to direct preference optimization and DeepSeek's GRPO.
           </p>
         </div>
         <div style="margin-top: 1.5rem;">
-          <a href="posts/rl-methods-dpo-grpo-dpdo-kto.html" class="btn btn-primary" style="padding: 8px 18px; font-size: 0.8rem;">Read Article</a>
+          <a href="posts/rl-methods-dpo-grpo-dpdo-kto.html" class="btn btn-primary" style="padding: 8px 18px; font-size: 0.82rem;">Read Article →</a>
         </div>
       </div>
 
       <!-- Post 3 -->
-      <div class="card" data-aos="fade-up" data-aos-delay="200" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <div class="card article-card reveal">
         <div>
           <span class="badge-tag">Agent Protocols</span>
           <span class="date">July 24, 2026</span>
-          <h3 style="font-size: 1.2rem; line-height: 1.4;">The Evolution of Interfaces: API, GUI, CLI, and MCP</h3>
-          <p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--text-dim);">
-            Tracing the four foundational computing interaction paradigms and why Anthropic's Model Context Protocol (MCP) is becoming the standard for tool-using LLMs.
+          <h3>The Evolution of Interfaces: API, GUI, CLI, and MCP</h3>
+          <p>
+            Tracing computing interaction paradigms and why Anthropic's Model Context Protocol (MCP) is becoming the standard for tool-using LLMs.
           </p>
         </div>
         <div style="margin-top: 1.5rem;">
-          <a href="posts/api-gui-cli-mcp.html" class="btn btn-primary" style="padding: 8px 18px; font-size: 0.8rem;">Read Article</a>
+          <a href="posts/api-gui-cli-mcp.html" class="btn btn-primary" style="padding: 8px 18px; font-size: 0.82rem;">Read Article →</a>
         </div>
       </div>
 
     </div>
   </section>
 
+  <!-- Footer -->
   <footer>
     <div class="container">
       <div class="socials">
-        <a href="https://github.com/RaviSriTejaKuriseti" target="_blank"><img src="./assets/img/ghub.png"
-            alt="Github"></a>
-        <a href="https://www.linkedin.com/in/ravi-sri-teja-kuriseti-83b9681b0/" target="_blank"><img
-            src="./assets/img/linkedin.png" alt="LinkedIn"></a>
+        <a href="https://github.com/RaviSriTejaKuriseti" target="_blank" aria-label="GitHub"><img src="./assets/img/ghub.png" alt="GitHub"></a>
+        <a href="https://www.linkedin.com/in/ravi-sri-teja-kuriseti-83b9681b0/" target="_blank" aria-label="LinkedIn"><img src="./assets/img/linkedin.png" alt="LinkedIn"></a>
       </div>
       <p>&copy; 2026 Kuriseti Ravi Sri Teja. All rights reserved.</p>
-      <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 10px;">Built with Human & Artificial
-        Intelligence.</p>
+      <p style="font-size: 0.82rem; color: var(--text-dim); margin-top: 8px;">Personal Portfolio & Technical Journal.</p>
     </div>
   </footer>
 
@@ -510,85 +592,102 @@
     async
   ></script>
 
-  <!-- Scripts -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- Native Lightweight Scripts (Zero External Dependencies) -->
   <script>
-    AOS.init({
-      duration: 1000,
-      once: true
-    });
-
-    // Mobile Navigation Toggle
-    const menuToggle = document.getElementById('menuToggle');
-    const navMenu = document.getElementById('navMenu');
-
-    if (menuToggle && navMenu) {
-      menuToggle.addEventListener('click', () => {
-        menuToggle.classList.toggle('active');
-        navMenu.classList.toggle('open');
-      });
-
-      // Close menu when clicking any link
-      navMenu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          menuToggle.classList.remove('active');
-          navMenu.classList.remove('open');
-        });
-      });
-    }
-
-    // Typewriter effect for Hero
-    const roles = [
-      "Machine Learning Engineer @ Eightfold AI",
-      "IIT Delhi CSE Graduate ('23)"
-    ];
-    let roleIdx = 0;
-    let charIdx = 0;
-    let isDeleting = false;
-    const typewriterEl = document.getElementById('typewriter');
-
-    function typeEffect() {
-      const currentRole = roles[roleIdx];
-      
-      if (isDeleting) {
-        typewriterEl.textContent = currentRole.substring(0, charIdx - 1);
-        charIdx--;
-      } else {
-        typewriterEl.textContent = currentRole.substring(0, charIdx + 1);
-        charIdx++;
-      }
-
-      let speed = isDeleting ? 40 : 80;
-
-      if (!isDeleting && charIdx === currentRole.length) {
-        speed = 2000; // Pause at end of word
-        isDeleting = true;
-      } else if (isDeleting && charIdx === 0) {
-        isDeleting = false;
-        roleIdx = (roleIdx + 1) % roles.length;
-        speed = 400; // Pause before typing next word
-      }
-
-      setTimeout(typeEffect, speed);
-    }
-
+    // Native IntersectionObserver for Reveal on Scroll
     document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(typeEffect, 600);
-    });
+      const reveals = document.querySelectorAll('.reveal');
+      
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.1,
+          rootMargin: '0px 0px -40px 0px'
+        });
 
-    // Smooth scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        const targetId = this.getAttribute('href');
-        if (targetId !== '#') {
-          const target = document.querySelector(targetId);
-          if (target) {
-            e.preventDefault();
-            target.scrollIntoView({
-              behavior: 'smooth'
-            });
-          }
+        reveals.forEach(el => observer.observe(el));
+      } else {
+        // Fallback for older browsers
+        reveals.forEach(el => el.classList.add('visible'));
+      }
+
+      // Typewriter effect for Hero
+      const roles = [
+        "Machine Learning Engineer @ Eightfold AI",
+        "IIT Delhi CSE Alumnus ('23)",
+        "WACV 2024 Author & Researcher"
+      ];
+      let roleIdx = 0;
+      let charIdx = 0;
+      let isDeleting = false;
+      const typewriterEl = document.getElementById('typewriter');
+
+      function typeEffect() {
+        if (!typewriterEl) return;
+        const currentRole = roles[roleIdx];
+        
+        if (isDeleting) {
+          typewriterEl.textContent = currentRole.substring(0, charIdx - 1);
+          charIdx--;
+        } else {
+          typewriterEl.textContent = currentRole.substring(0, charIdx + 1);
+          charIdx++;
         }
+
+        let speed = isDeleting ? 35 : 75;
+
+        if (!isDeleting && charIdx === currentRole.length) {
+          speed = 2200; // Pause at end of text
+          isDeleting = true;
+        } else if (isDeleting && charIdx === 0) {
+          isDeleting = false;
+          roleIdx = (roleIdx + 1) % roles.length;
+          speed = 450; // Pause before typing next role
+        }
+
+        setTimeout(typeEffect, speed);
+      }
+
+      setTimeout(typeEffect, 500);
+
+      // Mobile Navigation Toggle
+      const menuToggle = document.getElementById('menuToggle');
+      const navMenu = document.getElementById('navMenu');
+
+      if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', () => {
+          menuToggle.classList.toggle('active');
+          navMenu.classList.toggle('open');
+        });
+
+        navMenu.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            menuToggle.classList.remove('active');
+            navMenu.classList.remove('open');
+          });
+        });
+      }
+
+      // Smooth anchor scrolling
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          const targetId = this.getAttribute('href');
+          if (targetId && targetId !== '#') {
+            const target = document.querySelector(targetId);
+            if (target) {
+              e.preventDefault();
+              target.scrollIntoView({
+                behavior: 'smooth'
+              });
+            }
+          }
+        });
       });
     });
   </script>
